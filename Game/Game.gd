@@ -14,6 +14,7 @@ const UIThemeScript = preload("res://Game/UITheme.gd")
 const AudioOptionsScript = preload("res://Game/AudioOptions.gd")
 const TowerScript = preload("res://Game/Tower.gd")
 const SpeechScript = preload("res://Game/Speech.gd")
+const TouchControlsScript = preload("res://Game/TouchControls.gd")
 
 const TILE := 36
 const ZOOM := 1.8
@@ -130,6 +131,7 @@ var overlay_title: Label
 var overlay_info: Label
 var resume_btn: Button
 var options_box: VBoxContainer
+var touch: Control = null              # TouchControls.gd - only exists on touch devices
 
 
 func _ready() -> void:
@@ -340,6 +342,20 @@ func _process(raw_delta: float) -> void:
     _update_hud()
 
 
+## Called by TouchControls when the player taps the garden: same as a mouse click.
+func touch_tap(sp: Vector2) -> void:
+    if play_state != PLAYING:
+        return
+    _command_goto(level.tile_of(screen_to_world(sp)))
+
+
+func _notification(what: int) -> void:
+    # tab hidden / app switched away (browser or phone): pause instead of letting the teddies keep walking
+    if what == NOTIFICATION_APPLICATION_FOCUS_OUT and (Platform.is_web or Platform.is_touch):
+        if play_state == PLAYING and overlay != null:
+            _toggle_pause()
+
+
 func _unhandled_input(event: InputEvent) -> void:
     if event.is_action_pressed("pause"):
         _toggle_pause()
@@ -517,7 +533,7 @@ func _swap_leader() -> void:
 func _chirp() -> void:
     if leader != swan:
         Sound.play("deny", 0.8)
-        show_message("Only Swan can chirp. Press Tab to let her lead.", 2.2)
+        show_message(("Only Swan can chirp. Tap SWAP to let her lead." if Platform.is_touch else "Only Swan can chirp. Press Tab to let her lead."), 2.2)
         return
     if chirp_cd > 0.0:
         return
@@ -1070,7 +1086,7 @@ func on_guard_harmed(g) -> void:
     options_box.visible = false
     overlay_title.text = "A teddy got hurt!"
     overlay_title.add_theme_color_override("font_color", Color(1.0, 0.6, 0.55))
-    overlay_info.text = "Feather & Tail is a pacifist game - nobody may be harmed.\nA chasing teddy ran into a trap. Stay unseen near traps,\nbreak line of sight, or disarm them first (hold E as MNKI)."
+    overlay_info.text = "Feather & Tail is a pacifist game - nobody may be harmed.\nA chasing teddy ran into a trap. Stay unseen near traps,\nbreak line of sight, or disarm them first (hold %s as MNKI)." % ("DISARM" if Platform.is_touch else "E")
     resume_btn.visible = false
     overlay.visible = true
 
@@ -1105,14 +1121,21 @@ func _build_hud() -> void:
     root.add_child(ov)
     ov.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 
-    # toast message (bottom centre)
+    # on-screen controls: phones / tablets only (a PC never creates them)
+    if Platform.is_touch:
+        touch = TouchControlsScript.new()
+        touch.game = self
+        root.add_child(touch)
+        touch.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+
+    # toast message (bottom centre; narrower on touch so it clears the buttons)
     msg_label = Label.new()
-    msg_label.position = Vector2(200, 622)
-    msg_label.size = Vector2(880, 42)
+    msg_label.position = Vector2(260, 590) if Platform.is_touch else Vector2(200, 622)
+    msg_label.size = Vector2(760, 42) if Platform.is_touch else Vector2(880, 42)
     msg_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
     msg_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
     msg_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-    msg_label.add_theme_font_size_override("font_size", 18)
+    msg_label.add_theme_font_size_override("font_size", 16 if Platform.is_touch else 18)
     msg_label.add_theme_stylebox_override("normal", UIThemeScript.box(Color(0.05, 0.13, 0.10, 0.9), Color(0.45, 0.75, 0.50, 0.8), 14, 2))
     msg_label.visible = false
     root.add_child(msg_label)
@@ -1164,13 +1187,15 @@ func _build_hud() -> void:
 
     resume_btn = _make_button("Resume", _toggle_pause, box)
     _make_button("Restart", _restart, box)
+    if Platform.is_web and not OS.has_feature("web_ios"):
+        _make_button("Fullscreen", Platform.toggle_fullscreen, box)
     _make_button("Main menu", _to_menu, box)
 
 
 func _make_button(text: String, cb: Callable, parent: Control) -> Button:
     var b := Button.new()
     b.text = text
-    b.custom_minimum_size = Vector2(260, 44)
+    b.custom_minimum_size = Vector2(260, 54 if Platform.is_touch else 44)
     b.pressed.connect(cb)
     parent.add_child(b)
     return b
@@ -1204,3 +1229,5 @@ func _to_menu() -> void:
 
 func _update_hud() -> void:
     msg_label.visible = msg_timer > 0.0
+    if touch != null:
+        touch.set_active(play_state == PLAYING)

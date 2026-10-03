@@ -3,6 +3,7 @@ extends Control
 ## key-hint chips, split-screen frames and a minimap.
 
 const LevelScript = preload("res://Game/Level.gd")
+const ArtLoader = preload("res://Game/ArtLoader.gd")
 
 const MAP_PX := 5   # minimap pixels per tile
 
@@ -19,6 +20,7 @@ var clock: float = 0.0
 var mm_img: Image                 # minimap pixels, rebuilt only when the map changes
 var mm_tex: ImageTexture
 var mm_version: int = -1
+var redraw_acc: float = 0.0
 
 
 func _ready() -> void:
@@ -44,7 +46,12 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
     clock += delta
-    queue_redraw()
+    # the HUD is text-heavy: redraw it at ~30 Hz (full rate only while the split / merge animates)
+    redraw_acc += delta
+    var animating: bool = game != null and game.merge > 0.001 and game.merge < 0.999
+    if animating or redraw_acc >= 0.033:
+        redraw_acc = 0.0
+        queue_redraw()
 
 
 func _draw() -> void:
@@ -93,7 +100,22 @@ func _panel_frame(r: Rect2, h) -> void:
 
 # ----------------------------------------------------------------- icons
 
+## Draws Art/icon_<name>.png centred on c (about 2.4 x radius wide), tinted by col's alpha. Returns false if no file.
+func _art_icon(name: String, c: Vector2, r: float, alpha: float = 1.0) -> bool:
+    var t: Texture2D = ArtLoader.tex("icon_" + name)
+    if t == null:
+        return false
+    var sz: float = r * 2.4
+    var ts: Vector2 = t.get_size()
+    var k: float = sz / maxf(ts.x, ts.y)
+    var d: Vector2 = ts * k
+    draw_texture_rect(t, Rect2(c - d * 0.5, d), false, Color(1, 1, 1, alpha))
+    return true
+
+
 func _icon_apple(c: Vector2, r: float, col: Color = Color(0.88, 0.14, 0.14)) -> void:
+    if _art_icon("apple", c, r, col.a if col.a < 0.99 else 1.0):
+        return
     draw_circle(c + Vector2(0, 1), r, col)
     draw_circle(c + Vector2(-r * 0.3, -r * 0.2), r * 0.28, Color(1, 0.75, 0.75, 0.8))
     draw_line(c + Vector2(0, -r * 0.8), c + Vector2(1, -r * 1.3), Color(0.35, 0.22, 0.1), 1.5)
@@ -101,6 +123,8 @@ func _icon_apple(c: Vector2, r: float, col: Color = Color(0.88, 0.14, 0.14)) -> 
 
 
 func _icon_pear(c: Vector2, r: float, col: Color = Color(0.96, 0.80, 0.22)) -> void:
+    if _art_icon("pear", c, r, col.a if col.a < 0.99 else 1.0):
+        return
     draw_circle(c + Vector2(0, r * 0.35), r, col)
     draw_circle(c + Vector2(0, -r * 0.55), r * 0.62, col)
     draw_line(c + Vector2(0, -r * 1.1), c + Vector2(1, -r * 1.5), Color(0.35, 0.22, 0.1), 1.5)
@@ -108,6 +132,8 @@ func _icon_pear(c: Vector2, r: float, col: Color = Color(0.96, 0.80, 0.22)) -> v
 
 
 func _icon_heart(c: Vector2, r: float, col: Color) -> void:
+    if _art_icon("heart", c, r * 1.1):
+        return
     draw_circle(c + Vector2(-r * 0.5, -r * 0.3), r * 0.55, col)
     draw_circle(c + Vector2(r * 0.5, -r * 0.3), r * 0.55, col)
     draw_colored_polygon(PackedVector2Array([
@@ -165,7 +191,7 @@ func _draw_leader_panel() -> void:
     var fol = game.follower
     _portrait(Vector2(442, 33), lead.kind, 16.0, true)
     _text(Vector2(466, 31), "%s leads" % game.hero_name(lead), 17, CREAM)
-    _text(Vector2(466, 48), "Tab to swap", 12, Color(0.75, 0.85, 0.75))
+    _text(Vector2(466, 48), "tap SWAP" if Platform.is_touch else "Tab to swap", 12, Color(0.75, 0.85, 0.75))
     draw_line(Vector2(610, 18), Vector2(610, 48), Color(1, 1, 1, 0.15), 1.0)
     _portrait(Vector2(640, 33), fol.kind, 13.0, false)
     var fstate: String = "following"
@@ -193,6 +219,8 @@ func _draw_peace_panel() -> void:
 
 
 func _draw_key_hints() -> void:
+    if Platform.is_touch:
+        return      # on-screen buttons replace the keyboard hints
     var hints: Array = []
     if game.leader.kind == "mnki":
         hints = [["WASD", "move"], ["Shift", "sneak"], ["F", "cut hedge"], ["E", "disarm trap"], ["Tab", "swap"], ["Click", "command"], ["H", "hold"], ["Esc", "pause"]]

@@ -4,6 +4,7 @@ extends Control
 ## All vector placeholders, drawn in 1280x720 space.
 
 const Sprites = preload("res://Game/Sprites.gd")
+const ArtLoader = preload("res://Game/ArtLoader.gd")
 
 const PATH_COL := Color(0.86, 0.81, 0.64)
 const WATER_COL := Color(0.25, 0.60, 0.92)
@@ -39,8 +40,16 @@ var trees: Array = [
 ]
 
 
+var bg_tex: Texture2D = null    # Art/menu_background.png - when present it replaces the whole vector scene
+
+
 func _ready() -> void:
     mouse_filter = Control.MOUSE_FILTER_IGNORE
+    bg_tex = ArtLoader.tex("menu_background")
+    if bg_tex != null:
+        set_process(false)          # a still picture needs no per-frame redraw
+        queue_redraw()
+        return
     if not is_static:
         # a second copy of this node draws all the non-moving scenery behind us
         var back: Control = get_script().new()
@@ -90,6 +99,9 @@ func _process(delta: float) -> void:
 
 
 func _draw() -> void:
+    if bg_tex != null:
+        ArtLoader.draw_cover(self, bg_tex, Rect2(Vector2.ZERO, Vector2(1280, 720)))
+        return
     if is_static:
         _draw_static()
     else:

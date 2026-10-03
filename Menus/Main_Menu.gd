@@ -4,6 +4,7 @@ extends Control
 const UIThemeScript = preload("res://Game/UITheme.gd")
 const BackdropScript = preload("res://Menus/Backdrop.gd")
 const AudioOptionsScript = preload("res://Game/AudioOptions.gd")
+const ArtLoader = preload("res://Game/ArtLoader.gd")
 
 const TAGLINE := "Harm no one. Avoid the guards. Escape together."
 
@@ -43,13 +44,23 @@ func _ready() -> void:
     box.custom_minimum_size = Vector2(500, 0)
     pad.add_child(box)
 
-    var title := Label.new()
-    title.text = "Feather & Tail"
-    title.add_theme_font_size_override("font_size", 62)
-    title.add_theme_color_override("font_color", UIThemeScript.GOLD)
-    title.add_theme_constant_override("outline_size", 8)
-    title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-    box.add_child(title)
+    var logo: Texture2D = ArtLoader.tex("title_logo")
+    if logo != null:
+        # Art/title_logo.png replaces the text title (scaled to fit 460 x 150)
+        var lr := TextureRect.new()
+        lr.texture = logo
+        lr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+        lr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+        lr.custom_minimum_size = Vector2(460, 150)
+        box.add_child(lr)
+    else:
+        var title := Label.new()
+        title.text = "Feather & Tail"
+        title.add_theme_font_size_override("font_size", 62)
+        title.add_theme_color_override("font_color", UIThemeScript.GOLD)
+        title.add_theme_constant_override("outline_size", 8)
+        title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+        box.add_child(title)
 
     var tag := Label.new()
     tag.text = TAGLINE
@@ -78,8 +89,14 @@ func _ready() -> void:
     how.pressed.connect(_on_how)
     var opts := _button("Options", box)
     opts.pressed.connect(_on_options)
-    var quit := _button("Quit", box)
-    quit.pressed.connect(_on_quit)
+    if Platform.is_web:
+        # a browser tab cannot "quit"; offer fullscreen instead (not possible on iPhone Safari)
+        if not OS.has_feature("web_ios"):
+            var fs := _button("Fullscreen", box)
+            fs.pressed.connect(Platform.toggle_fullscreen)
+    else:
+        var quit := _button("Quit", box)
+        quit.pressed.connect(_on_quit)
 
     if PlayerData.best_time > 0.0:
         var best := Label.new()
@@ -96,7 +113,7 @@ func _ready() -> void:
 func _button(text: String, parent: Control) -> Button:
     var b := Button.new()
     b.text = text
-    b.custom_minimum_size = Vector2(320, 48)
+    b.custom_minimum_size = Vector2(320, 52 if Platform.is_touch else 48)
     parent.add_child(b)
     return b
 
@@ -173,15 +190,27 @@ func _build_how_to() -> void:
     grid.add_theme_constant_override("h_separation", 22)
     grid.add_theme_constant_override("v_separation", 4)
     col.add_child(grid)
-    _row(grid, "WASD / Arrows", "Move whoever is leading")
-    _row(grid, "Tab", "Swap leader - the other friend follows")
-    _row(grid, "Click", "Send your friend to a spot you have already seen")
-    _row(grid, "H  /  X  /  Right-click", "Hold position  /  cancel the command")
-    _row(grid, "MNKI: F (hold)", "Cut an adjacent hedge for a shortcut - noisy!")
-    _row(grid, "MNKI: E (hold)", "Disarm an adjacent garden trap")
-    _row(grid, "MNKI: Shift", "Sneak - teddies notice you from less far away")
-    _row(grid, "Swan: Space", "Chirp - curious teddies walk over to look")
-    _row(grid, "Esc  /  R", "Pause  /  restart")
+    if Platform.is_touch:
+        _row(grid, "Left thumb", "Touch and drag in the bottom-left to move whoever is leading")
+        _row(grid, "SWAP", "Swap leader - the other friend follows")
+        _row(grid, "Tap the garden", "Send your friend to a spot you have already seen")
+        _row(grid, "HOLD  /  X", "Hold position (GO to follow again)  /  cancel the command")
+        _row(grid, "MNKI: CUT (hold)", "Cut an adjacent hedge for a shortcut - noisy!")
+        _row(grid, "MNKI: DISARM (hold)", "Disarm an adjacent garden trap")
+        _row(grid, "MNKI: SNEAK", "Toggle sneaking - teddies notice you from less far away")
+        _row(grid, "Swan: CHIRP", "Chirp - curious teddies walk over to look")
+        _row(grid, "Pause button", "Top of the screen - pause, restart, volume")
+    else:
+        _row(grid, "WASD / Arrows", "Move whoever is leading")
+        _row(grid, "Tab", "Swap leader - the other friend follows")
+        _row(grid, "Click", "Send your friend to a spot you have already seen")
+        _row(grid, "H  /  X  /  Right-click", "Hold position  /  cancel the command")
+        _row(grid, "MNKI: F (hold)", "Cut an adjacent hedge for a shortcut - noisy!")
+        _row(grid, "MNKI: E (hold)", "Disarm an adjacent garden trap")
+        _row(grid, "MNKI: Shift", "Sneak - teddies notice you from less far away")
+        _row(grid, "Swan: Space", "Chirp - curious teddies walk over to look")
+    if not Platform.is_touch:
+        _row(grid, "Esc  /  R", "Pause  /  restart")
 
     _heading("The garden", col)
     var garden := Label.new()
@@ -233,7 +262,7 @@ func _build_options() -> void:
     _heading("Sound", box)
     AudioOptionsScript.build(box)
     var hint := Label.new()
-    hint.text = "Press M at any time to mute / unmute."
+    hint.text = "Use the Master volume slider to mute." if Platform.is_touch else "Press M at any time to mute / unmute."
     hint.add_theme_font_size_override("font_size", 14)
     hint.add_theme_color_override("font_color", Color(0.75, 0.88, 0.78))
     box.add_child(hint)

@@ -17,6 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+Platform="*res://Autoloads/Platform.gd"
 PlayerData="*res://Autoloads/PlayerData.gd"
 Sound="*res://Autoloads/Sound.gd"
 Transition="*res://Autoloads/Transition.gd"
@@ -25,6 +26,7 @@ Transition="*res://Autoloads/Transition.gd"
 
 window/size/viewport_width=1280
 window/size/viewport_height=720
+window/size/mode=3
 window/stretch/mode="canvas_items"
 
 [rendering]
