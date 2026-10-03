@@ -8,13 +8,8 @@ extends Node2D
 const LevelScript = preload("res://Game/Level.gd")
 const HeroScript = preload("res://Game/Hero.gd")
 const GuardScript = preload("res://Game/Guard.gd")
-const WorldDrawScript = preload("res://Game/WorldDraw.gd")
-const OverlayScript = preload("res://Game/Overlay.gd")
-const UIThemeScript = preload("res://Game/UITheme.gd")
-const AudioOptionsScript = preload("res://Game/AudioOptions.gd")
 const TowerScript = preload("res://Game/Tower.gd")
 const SpeechScript = preload("res://Game/Speech.gd")
-const TouchControlsScript = preload("res://Game/TouchControls.gd")
 
 const TILE := 36
 const ZOOM := 1.8
@@ -113,25 +108,21 @@ var rect_a := Rect2(Vector2.ZERO, SCREEN)
 var rect_b := Rect2(Vector2.ZERO, Vector2.ZERO)
 var cam_pos_a := Vector2.ZERO
 var cam_pos_b := Vector2.ZERO
-var cont_a: SubViewportContainer
-var cont_b: SubViewportContainer
-var sub_a: SubViewport
-var sub_b: SubViewport
-var cam_a: Camera2D
-var cam_b: Camera2D
-var world: Node2D
+@onready var cont_a: SubViewportContainer = %ViewA
+@onready var cont_b: SubViewportContainer = %ViewB
+@onready var sub_a: SubViewport = %SubViewportA
+@onready var sub_b: SubViewport = %SubViewportB
+@onready var cam_a: Camera2D = %CameraA
+@onready var cam_b: Camera2D = %CameraB
+@onready var world: Node2D = %World
+@onready var bubble_layer: Node2D = %BubbleLayer
+@onready var hud: CanvasLayer = %HUD
+var alert_tex: Dictionary = {}   # "?" "!" "~" "x_x" -> Texture2D (edit in Game.tscn / Art/Icons/alert_*.png)
 
 var tex_mnki: Texture2D = null
 var tex_swan: Texture2D = null
 var tex_guard: Texture2D = null
 
-var msg_label: Label
-var overlay: Control
-var overlay_title: Label
-var overlay_info: Label
-var resume_btn: Button
-var options_box: VBoxContainer
-var touch: Control = null              # TouchControls.gd - only exists on touch devices
 
 
 func _ready() -> void:
@@ -172,8 +163,8 @@ func _ready() -> void:
     mnki.last_pos = mnki.pos
     swan.last_pos = swan.pos
 
-    _build_views()
-    _build_hud()
+    _setup_views()
+    _setup_hud()
     Sound.set_mode("game")
     Sound.ensure_music()
     Sound.set_tension(0.0)
@@ -193,44 +184,15 @@ func _try_tex(path: String) -> Texture2D:
 
 # --------------------------------------------------------------- split screen
 
-func _build_views() -> void:
-    var layer := CanvasLayer.new()
-    layer.layer = 0
-    add_child(layer)
-
-    cont_a = SubViewportContainer.new()
-    cont_a.stretch = true
-    cont_a.mouse_filter = Control.MOUSE_FILTER_IGNORE
-    layer.add_child(cont_a)
-    sub_a = SubViewport.new()
-    sub_a.size = Vector2i(1280, 720)
-    sub_a.render_target_update_mode = SubViewport.UPDATE_ALWAYS
-    sub_a.disable_3d = true
-    cont_a.add_child(sub_a)
-
-    world = WorldDrawScript.new()
-    world.game = self
-    sub_a.add_child(world)
-    cam_a = Camera2D.new()
-    cam_a.zoom = Vector2(ZOOM, ZOOM)
-    sub_a.add_child(cam_a)
-    cam_a.make_current()
-
-    cont_b = SubViewportContainer.new()
-    cont_b.stretch = true
-    cont_b.mouse_filter = Control.MOUSE_FILTER_IGNORE
-    layer.add_child(cont_b)
-    sub_b = SubViewport.new()
-    sub_b.size = Vector2i(640, 720)
-    sub_b.render_target_update_mode = SubViewport.UPDATE_DISABLED   # only rendered while split
-    sub_b.disable_3d = true
+func _setup_views() -> void:
+    # the scene (Game.tscn) already holds both viewports + cameras; here we only connect them to the game
     sub_b.world_2d = sub_a.world_2d     # same garden, second camera
-    cont_b.add_child(sub_b)
-    cam_b = Camera2D.new()
-    cam_b.zoom = Vector2(ZOOM, ZOOM)
-    sub_b.add_child(cam_b)
+    cam_a.make_current()
     cam_b.make_current()
-    cont_b.visible = false
+    world.game = self
+    world.setup()
+    bubble_layer.setup(self)
+    alert_tex = {"?": %Notice.texture, "!": %Chase.texture, "~": %Recover.texture, "x_x": %Hurt.texture}
 
 
 func _update_views(delta: float) -> void:
@@ -352,7 +314,7 @@ func touch_tap(sp: Vector2) -> void:
 func _notification(what: int) -> void:
     # tab hidden / app switched away (browser or phone): pause instead of letting the teddies keep walking
     if what == NOTIFICATION_APPLICATION_FOCUS_OUT and (Platform.is_web or Platform.is_touch):
-        if play_state == PLAYING and overlay != null:
+        if play_state == PLAYING and hud != null:
             _toggle_pause()
 
 
@@ -1032,15 +994,8 @@ func _check_win() -> void:
         play_state = WON
         Sound.play("win")
         Sound.set_duck(true)
-        options_box.visible = false
         var best: bool = PlayerData.record_win(elapsed)
-        overlay_title.text = "Everyone made it out - and everyone is safe!"
-        overlay_title.add_theme_color_override("font_color", UIThemeScript.GOLD)
-        var extra: String = "  (new best!)" if best else ""
-        overlay_info.text = "Fruit %d/%d   Time %s%s\nTraps disarmed: %d    Walked back to the gate: %d    Swan bonked: %d\nTeddies harmed: 0  -  true pacifists." % [
-            collected, fruit_total, PlayerData.format_time(elapsed), extra, traps_disarmed, caught, swan_bonks]
-        resume_btn.visible = false
-        overlay.visible = true
+        hud.show_win(collected, fruit_total, PlayerData.format_time(elapsed), best, traps_disarmed, caught, swan_bonks)
     elif hint_cd <= 0.0:
         hint_cd = 5.0
         show_message("Bring both friends to the exit gate.", 2.5)
@@ -1083,12 +1038,7 @@ func on_guard_harmed(g) -> void:
     Sound.set_tension(0.0)
     shake = 0.8
     get_tree().create_timer(0.9).timeout.connect(func() -> void: Sound.play("lose"))
-    options_box.visible = false
-    overlay_title.text = "A teddy got hurt!"
-    overlay_title.add_theme_color_override("font_color", Color(1.0, 0.6, 0.55))
-    overlay_info.text = "Feather & Tail is a pacifist game - nobody may be harmed.\nA chasing teddy ran into a trap. Stay unseen near traps,\nbreak line of sight, or disarm them first (hold %s as MNKI)." % ("DISARM" if Platform.is_touch else "E")
-    resume_btn.visible = false
-    overlay.visible = true
+    hud.show_lose()
 
 
 func hero_name(h: HeroScript) -> String:
@@ -1096,125 +1046,30 @@ func hero_name(h: HeroScript) -> String:
 
 
 func show_message(text: String, secs: float) -> void:
-    if msg_label == null:
+    if hud == null:
         return
-    msg_label.text = text
+    hud.show_message(text)
     msg_timer = secs
 
 
 # ----------------------------------------------------------------- UI / HUD
 
-func _build_hud() -> void:
-    var layer := CanvasLayer.new()
-    layer.layer = 5
-    add_child(layer)
-
-    # one themed root so every panel / button / label shares the same garden look
-    var root := Control.new()
-    root.theme = UIThemeScript.make()
-    root.mouse_filter = Control.MOUSE_FILTER_IGNORE
-    layer.add_child(root)
-    root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-
-    var ov := OverlayScript.new()
-    ov.game = self
-    root.add_child(ov)
-    ov.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-
-    # on-screen controls: phones / tablets only (a PC never creates them)
-    if Platform.is_touch:
-        touch = TouchControlsScript.new()
-        touch.game = self
-        root.add_child(touch)
-        touch.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-
-    # toast message (bottom centre; narrower on touch so it clears the buttons)
-    msg_label = Label.new()
-    msg_label.position = Vector2(260, 590) if Platform.is_touch else Vector2(200, 622)
-    msg_label.size = Vector2(760, 42) if Platform.is_touch else Vector2(880, 42)
-    msg_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-    msg_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-    msg_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-    msg_label.add_theme_font_size_override("font_size", 16 if Platform.is_touch else 18)
-    msg_label.add_theme_stylebox_override("normal", UIThemeScript.box(Color(0.05, 0.13, 0.10, 0.9), Color(0.45, 0.75, 0.50, 0.8), 14, 2))
-    msg_label.visible = false
-    root.add_child(msg_label)
-
-    # pause / win / lose panel
-    overlay = Control.new()
-    overlay.visible = false
-    root.add_child(overlay)
-    overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-
-    var dim := ColorRect.new()
-    dim.color = Color(0, 0, 0, 0.6)
-    overlay.add_child(dim)
-    dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-
-    var center := CenterContainer.new()
-    overlay.add_child(center)
-    center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-
-    var card := PanelContainer.new()
-    center.add_child(card)
-    var margin := MarginContainer.new()
-    for side in ["margin_left", "margin_right"]:
-        margin.add_theme_constant_override(side, 44)
-    for side in ["margin_top", "margin_bottom"]:
-        margin.add_theme_constant_override(side, 30)
-    card.add_child(margin)
-
-    var box := VBoxContainer.new()
-    box.add_theme_constant_override("separation", 14)
-    margin.add_child(box)
-
-    overlay_title = Label.new()
-    overlay_title.add_theme_font_size_override("font_size", 40)
-    overlay_title.add_theme_color_override("font_color", UIThemeScript.CREAM)
-    overlay_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-    box.add_child(overlay_title)
-
-    overlay_info = Label.new()
-    overlay_info.add_theme_font_size_override("font_size", 19)
-    overlay_info.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-    box.add_child(overlay_info)
-
-    options_box = VBoxContainer.new()
-    options_box.add_theme_constant_override("separation", 8)
-    options_box.visible = false
-    AudioOptionsScript.build(options_box)
-    box.add_child(options_box)
-
-    resume_btn = _make_button("Resume", _toggle_pause, box)
-    _make_button("Restart", _restart, box)
-    if Platform.is_web and not OS.has_feature("web_ios"):
-        _make_button("Fullscreen", Platform.toggle_fullscreen, box)
-    _make_button("Main menu", _to_menu, box)
-
-
-func _make_button(text: String, cb: Callable, parent: Control) -> Button:
-    var b := Button.new()
-    b.text = text
-    b.custom_minimum_size = Vector2(260, 54 if Platform.is_touch else 44)
-    b.pressed.connect(cb)
-    parent.add_child(b)
-    return b
+func _setup_hud() -> void:
+    hud.setup(self)
+    hud.resume_pressed.connect(_toggle_pause)
+    hud.restart_pressed.connect(_restart)
+    hud.menu_pressed.connect(_to_menu)
 
 
 func _toggle_pause() -> void:
     if play_state == PLAYING:
         play_state = PAUSED
-        overlay_title.text = "Paused"
-        overlay_title.add_theme_color_override("font_color", UIThemeScript.CREAM)
-        overlay_info.text = "Take a breath. The teddies are patient."
-        resume_btn.visible = true
-        options_box.visible = true
-        overlay.visible = true
+        hud.show_pause(true)
         Sound.play("pause_open")
         Sound.set_duck(true)
     elif play_state == PAUSED:
         play_state = PLAYING
-        overlay.visible = false
+        hud.show_pause(false)
         Sound.play("pause_close")
         Sound.set_duck(false)
 
@@ -1228,6 +1083,5 @@ func _to_menu() -> void:
 
 
 func _update_hud() -> void:
-    msg_label.visible = msg_timer > 0.0
-    if touch != null:
-        touch.set_active(play_state == PLAYING)
+    hud.update_hud(get_process_delta_time())
+    hud.set_touch_active(play_state == PLAYING)

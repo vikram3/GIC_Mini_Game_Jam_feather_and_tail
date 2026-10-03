@@ -1,0 +1,35 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://UI/Components/StatRow.gd" id="1_StatRow"]
+
+[node name="StatRow" type="HBoxContainer"]
+theme_override_constants/separation = 10
+label_text = "Stat"
+value_text = "0"
+script = ExtResource("1_StatRow")
+
+[node name="Icon" type="TextureRect" parent="."]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+custom_minimum_size = Vector2(28.0, 28.0)
+expand_mode = 1
+stretch_mode = 5
+texture_filter = 4
+unique_name_in_owner = true
+
+[node name="Name" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Stat"
+vertical_alignment = 1
+unique_name_in_owner = true
+
+[node name="Value" type="Label" parent="."]
+layout_mode = 2
+theme_type_variation = &"LabelGold"
+text = "0"
+custom_minimum_size = Vector2(110.0, 0.0)
+horizontal_alignment = 2
+vertical_alignment = 1
+unique_name_in_owner = true

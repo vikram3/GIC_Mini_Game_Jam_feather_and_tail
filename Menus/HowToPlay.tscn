@@ -1,0 +1,348 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Menus/HowToPlay.gd" id="1_HowToPlay"]
+
+[node name="HowToPlay" type="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+script = ExtResource("1_HowToPlay")
+
+[node name="Dim" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0, 0.0, 0.0, 0.6)
+
+[node name="Center" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Card" type="PanelContainer" parent="Center"]
+layout_mode = 2
+
+[node name="Pad" type="MarginContainer" parent="Center/Card"]
+layout_mode = 2
+theme_override_constants/margin_left = 34
+theme_override_constants/margin_top = 22
+theme_override_constants/margin_right = 34
+theme_override_constants/margin_bottom = 22
+
+[node name="Outer" type="VBoxContainer" parent="Center/Card/Pad"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Scroll" type="ScrollContainer" parent="Center/Card/Pad/Outer"]
+layout_mode = 2
+custom_minimum_size = Vector2(760.0, 470.0)
+horizontal_scroll_mode = 0
+unique_name_in_owner = true
+
+[node name="Content" type="VBoxContainer" parent="Center/Card/Pad/Outer/Scroll"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="GoalHeading" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content"]
+layout_mode = 2
+theme_type_variation = &"LabelHeading"
+text = "Goal"
+
+[node name="GoalText" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content"]
+layout_mode = 2
+text = "Collect every fruit - red apples for MNKI, golden pears for Swan - then bring BOTH friends to the exit gate beside the fountain. Nobody may be harmed, not even the teddy-bear guards."
+autowrap_mode = 3
+custom_minimum_size = Vector2(700.0, 0.0)
+
+[node name="ControlsHeading" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content"]
+layout_mode = 2
+theme_type_variation = &"LabelHeading"
+text = "Controls"
+
+[node name="ControlsKeyboard" type="GridContainer" parent="Center/Card/Pad/Outer/Scroll/Content"]
+layout_mode = 2
+columns = 2
+theme_override_constants/h_separation = 22
+theme_override_constants/v_separation = 4
+visible = true
+unique_name_in_owner = true
+
+[node name="ControlsKeyboardKey0" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content/ControlsKeyboard"]
+layout_mode = 2
+theme_type_variation = &"LabelGold"
+text = "WASD / Arrows"
+theme_override_font_sizes/font_size = 16
+
+[node name="ControlsKeyboardText0" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content/ControlsKeyboard"]
+layout_mode = 2
+text = "Move whoever is leading"
+autowrap_mode = 3
+custom_minimum_size = Vector2(430.0, 0.0)
+theme_override_font_sizes/font_size = 16
+
+[node name="ControlsKeyboardKey1" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content/ControlsKeyboard"]
+layout_mode = 2
+theme_type_variation = &"LabelGold"
+text = "Tab"
+theme_override_font_sizes/font_size = 16
+
+[node name="ControlsKeyboardText1" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content/ControlsKeyboard"]
+layout_mode = 2
+text = "Swap leader - the other friend follows"
+autowrap_mode = 3
+custom_minimum_size = Vector2(430.0, 0.0)
+theme_override_font_sizes/font_size = 16
+
+[node name="ControlsKeyboardKey2" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content/ControlsKeyboard"]
+layout_mode = 2
+theme_type_variation = &"LabelGold"
+text = "Click"
+theme_override_font_sizes/font_size = 16
+
+[node name="ControlsKeyboardText2" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content/ControlsKeyboard"]
+layout_mode = 2
+text = "Send your friend to a spot you have already seen"
+autowrap_mode = 3
+custom_minimum_size = Vector2(430.0, 0.0)
+theme_override_font_sizes/font_size = 16
+
+[node name="ControlsKeyboardKey3" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content/ControlsKeyboard"]
+layout_mode = 2
+theme_type_variation = &"LabelGold"
+text = "H  /  X  /  Right-click"
+theme_override_font_sizes/font_size = 16
+
+[node name="ControlsKeyboardText3" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content/ControlsKeyboard"]
+layout_mode = 2
+text = "Hold position  /  cancel the command"
+autowrap_mode = 3
+custom_minimum_size = Vector2(430.0, 0.0)
+theme_override_font_sizes/font_size = 16
+
+[node name="ControlsKeyboardKey4" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content/ControlsKeyboard"]
+layout_mode = 2
+theme_type_variation = &"LabelGold"
+text = "MNKI: F (hold)"
+theme_override_font_sizes/font_size = 16
+
+[node name="ControlsKeyboardText4" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content/ControlsKeyboard"]
+layout_mode = 2
+text = "Cut an adjacent hedge for a shortcut - noisy!"
+autowrap_mode = 3
+custom_minimum_size = Vector2(430.0, 0.0)
+theme_override_font_sizes/font_size = 16
+
+[node name="ControlsKeyboardKey5" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content/ControlsKeyboard"]
+layout_mode = 2
+theme_type_variation = &"LabelGold"
+text = "MNKI: E (hold)"
+theme_override_font_sizes/font_size = 16
+
+[node name="ControlsKeyboardText5" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content/ControlsKeyboard"]
+layout_mode = 2
+text = "Disarm an adjacent garden trap"
+autowrap_mode = 3
+custom_minimum_size = Vector2(430.0, 0.0)
+theme_override_font_sizes/font_size = 16
+
+[node name="ControlsKeyboardKey6" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content/ControlsKeyboard"]
+layout_mode = 2
+theme_type_variation = &"LabelGold"
+text = "MNKI: Shift"
+theme_override_font_sizes/font_size = 16
+
+[node name="ControlsKeyboardText6" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content/ControlsKeyboard"]
+layout_mode = 2
+text = "Sneak - teddies notice you from less far away"
+autowrap_mode = 3
+custom_minimum_size = Vector2(430.0, 0.0)
+theme_override_font_sizes/font_size = 16
+
+[node name="ControlsKeyboardKey7" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content/ControlsKeyboard"]
+layout_mode = 2
+theme_type_variation = &"LabelGold"
+text = "Swan: Space"
+theme_override_font_sizes/font_size = 16
+
+[node name="ControlsKeyboardText7" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content/ControlsKeyboard"]
+layout_mode = 2
+text = "Chirp - curious teddies walk over to look"
+autowrap_mode = 3
+custom_minimum_size = Vector2(430.0, 0.0)
+theme_override_font_sizes/font_size = 16
+
+[node name="ControlsKeyboardKey8" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content/ControlsKeyboard"]
+layout_mode = 2
+theme_type_variation = &"LabelGold"
+text = "Esc  /  R"
+theme_override_font_sizes/font_size = 16
+
+[node name="ControlsKeyboardText8" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content/ControlsKeyboard"]
+layout_mode = 2
+text = "Pause  /  restart"
+autowrap_mode = 3
+custom_minimum_size = Vector2(430.0, 0.0)
+theme_override_font_sizes/font_size = 16
+
+[node name="ControlsTouch" type="GridContainer" parent="Center/Card/Pad/Outer/Scroll/Content"]
+layout_mode = 2
+columns = 2
+theme_override_constants/h_separation = 22
+theme_override_constants/v_separation = 4
+visible = false
+unique_name_in_owner = true
+
+[node name="ControlsTouchKey0" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content/ControlsTouch"]
+layout_mode = 2
+theme_type_variation = &"LabelGold"
+text = "Left thumb"
+theme_override_font_sizes/font_size = 16
+
+[node name="ControlsTouchText0" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content/ControlsTouch"]
+layout_mode = 2
+text = "Touch and drag in the bottom-left to move whoever is leading"
+autowrap_mode = 3
+custom_minimum_size = Vector2(430.0, 0.0)
+theme_override_font_sizes/font_size = 16
+
+[node name="ControlsTouchKey1" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content/ControlsTouch"]
+layout_mode = 2
+theme_type_variation = &"LabelGold"
+text = "SWAP"
+theme_override_font_sizes/font_size = 16
+
+[node name="ControlsTouchText1" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content/ControlsTouch"]
+layout_mode = 2
+text = "Swap leader - the other friend follows"
+autowrap_mode = 3
+custom_minimum_size = Vector2(430.0, 0.0)
+theme_override_font_sizes/font_size = 16
+
+[node name="ControlsTouchKey2" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content/ControlsTouch"]
+layout_mode = 2
+theme_type_variation = &"LabelGold"
+text = "Tap the garden"
+theme_override_font_sizes/font_size = 16
+
+[node name="ControlsTouchText2" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content/ControlsTouch"]
+layout_mode = 2
+text = "Send your friend to a spot you have already seen"
+autowrap_mode = 3
+custom_minimum_size = Vector2(430.0, 0.0)
+theme_override_font_sizes/font_size = 16
+
+[node name="ControlsTouchKey3" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content/ControlsTouch"]
+layout_mode = 2
+theme_type_variation = &"LabelGold"
+text = "HOLD  /  X"
+theme_override_font_sizes/font_size = 16
+
+[node name="ControlsTouchText3" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content/ControlsTouch"]
+layout_mode = 2
+text = "Hold position (GO to follow again)  /  cancel the command"
+autowrap_mode = 3
+custom_minimum_size = Vector2(430.0, 0.0)
+theme_override_font_sizes/font_size = 16
+
+[node name="ControlsTouchKey4" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content/ControlsTouch"]
+layout_mode = 2
+theme_type_variation = &"LabelGold"
+text = "MNKI: CUT (hold)"
+theme_override_font_sizes/font_size = 16
+
+[node name="ControlsTouchText4" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content/ControlsTouch"]
+layout_mode = 2
+text = "Cut an adjacent hedge for a shortcut - noisy!"
+autowrap_mode = 3
+custom_minimum_size = Vector2(430.0, 0.0)
+theme_override_font_sizes/font_size = 16
+
+[node name="ControlsTouchKey5" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content/ControlsTouch"]
+layout_mode = 2
+theme_type_variation = &"LabelGold"
+text = "MNKI: DISARM (hold)"
+theme_override_font_sizes/font_size = 16
+
+[node name="ControlsTouchText5" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content/ControlsTouch"]
+layout_mode = 2
+text = "Disarm an adjacent garden trap"
+autowrap_mode = 3
+custom_minimum_size = Vector2(430.0, 0.0)
+theme_override_font_sizes/font_size = 16
+
+[node name="ControlsTouchKey6" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content/ControlsTouch"]
+layout_mode = 2
+theme_type_variation = &"LabelGold"
+text = "MNKI: SNEAK"
+theme_override_font_sizes/font_size = 16
+
+[node name="ControlsTouchText6" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content/ControlsTouch"]
+layout_mode = 2
+text = "Toggle sneaking - teddies notice you from less far away"
+autowrap_mode = 3
+custom_minimum_size = Vector2(430.0, 0.0)
+theme_override_font_sizes/font_size = 16
+
+[node name="ControlsTouchKey7" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content/ControlsTouch"]
+layout_mode = 2
+theme_type_variation = &"LabelGold"
+text = "Swan: CHIRP"
+theme_override_font_sizes/font_size = 16
+
+[node name="ControlsTouchText7" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content/ControlsTouch"]
+layout_mode = 2
+text = "Chirp - curious teddies walk over to look"
+autowrap_mode = 3
+custom_minimum_size = Vector2(430.0, 0.0)
+theme_override_font_sizes/font_size = 16
+
+[node name="ControlsTouchKey8" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content/ControlsTouch"]
+layout_mode = 2
+theme_type_variation = &"LabelGold"
+text = "Pause button"
+theme_override_font_sizes/font_size = 16
+
+[node name="ControlsTouchText8" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content/ControlsTouch"]
+layout_mode = 2
+text = "Top of the screen - pause, restart, volume"
+autowrap_mode = 3
+custom_minimum_size = Vector2(430.0, 0.0)
+theme_override_font_sizes/font_size = 16
+
+[node name="GardenHeading" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content"]
+layout_mode = 2
+theme_type_variation = &"LabelHeading"
+text = "The garden"
+
+[node name="GardenText" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content"]
+layout_mode = 2
+text = "Hedges can be cut by MNKI. Low stone walls and streams block MNKI, but Swan flies right over them. Wooden bridges let both friends cross. Bushes hide MNKI. Swan sees a wide area from above, including every teddy's view cone."
+autowrap_mode = 3
+custom_minimum_size = Vector2(700.0, 0.0)
+
+[node name="TeddyHeading" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content"]
+layout_mode = 2
+theme_type_variation = &"LabelHeading"
+text = "The teddy guards"
+
+[node name="TeddyText" type="Label" parent="Center/Card/Pad/Outer/Scroll/Content"]
+layout_mode = 2
+text = "Teddies never attack. If one catches MNKI, he is politely walked back to the gate. BUT a teddy that is chasing in a hurry will run straight over a trap and get hurt - and that ends the run. Break line of sight, hide, or disarm traps first. Teddies run FASTER than MNKI and call their friends, so you cannot outrun them: slip into a bush while they are still far away and they lose your trail. Sling teddies on watchtowers lob pebbles at Swan - the red target shows where a pebble will land, so keep moving to dodge. A hit only makes her dizzy."
+autowrap_mode = 3
+custom_minimum_size = Vector2(700.0, 0.0)
+
+[node name="CloseButton" type="Button" parent="Center/Card/Pad/Outer"]
+layout_mode = 2
+custom_minimum_size = Vector2(320.0, 48.0)
+text = "Got it"
+unique_name_in_owner = true

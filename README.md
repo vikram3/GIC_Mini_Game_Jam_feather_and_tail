@@ -106,14 +106,29 @@ Decoration is placed by a per-tile hash of the maze seed, so it never flickers a
 - `Game/Game.gd` - leader/follower, split-screen cameras, hedge cutting, trap disarming, fruit, fog of war, HUD, win/lose
 - `Game/WorldDraw.gd` - draws the garden (shared by both camera views)
 - `Game/Sprites.gd` - vector placeholder MNKI, Swan and teddy guard (used by the game and the title screen)
-- `Game/UITheme.gd` - shared menu / panel / button theme
-- `Game/Overlay.gd` - HUD: fruit slots, who leads, peace counter, key hints, split dividers, minimap
+- `UI/GardenTheme.tres` - shared menu / panel / button theme (textures from `Art/Common`)
+- `UI/HUD.gd` + `UI/HUD.tscn` - HUD
 - `Menus/Main_Menu.*` - title, how to play
-- `Menus/Backdrop.gd` - animated garden scene behind the title screen
 
-## Using your own art
-Drop `mnki.png`, `swan.png`, `guard.png` (the teddy) into `Art/` and they replace the vector placeholders automatically.
-The garden itself (trees, water, bridge, gate...) is drawn in `Game/WorldDraw.gd` - each element is its own `_draw_*` function, so swapping one for a sprite is a one-function change.
+## Using your own art (GUI / HUD / icons are real scenes now)
+Nothing in the UI is drawn in code any more. Every screen is a `.tscn` with a named node hierarchy - open it, select a node,
+drop your texture on it. Every image is a PNG slot in `Art/` (full list: `Art/README.txt`); replace the file with the same name
+and it just works. Colours / fonts / sizes: `UI/GardenTheme.tres` (buttons, panels, sliders, label styles), set as the project theme.
+
+| Scene | What it is |
+|---|---|
+| `Menus/Main_Menu.tscn` | title: Background, TitleCard, Logo, buttons (+ instances of HowToPlay, OptionsMenu) |
+| `Menus/HowToPlay.tscn`, `Menus/OptionsMenu.tscn` | overlays |
+| `UI/HUD.tscn` | in-game HUD: SplitFrames, TopBar (FruitPanel / LeaderPanel / PeacePanel), Minimap, KeyHints, TouchControls, Toast, Pause/Win/Lose |
+| `UI/PauseMenu.tscn`, `UI/WinScreen.tscn`, `UI/LoseScreen.tscn` | end / pause screens (banners, badge, stat icons) |
+| `UI/Minimap.tscn`, `UI/SpeechBubble.tscn`, `UI/TouchControls.tscn`, `UI/RotateDevice.tscn` | HUD parts |
+| `UI/Components/*.tscn` | reusable bits: FruitSlot, KeyHint, StatRow, VolumeRow, OptionsPanel, TouchButton |
+| `Autoloads/Transition.tscn` | fade overlay (autoload) |
+| `Game/Game.tscn` | Views (2 viewports + cameras), World, BubbleLayer, AlertIcons, HUD |
+
+Scripts only fill these nodes with data (`UI/HUD.gd`, `Game/BubbleLayer.gd`, ...). Placeholder art: `tools/make_ui_placeholders.py`
+(never overwrites). Screenshots of every screen: `godot --path . --script res://tools/ui_shots.gd` (needs a display).
+The garden world (trees, water, gate, characters) is still vector code in `Game/WorldDraw.gd` / `Game/Sprites.gd`.
 
 ## Tuning (top of each script)
 `Game.gd`: speeds, `CUT_TIME`, `CHIRP_COOLDOWN`, `BONK_STUN`. `Guard.gd`: `VIEW_RANGE`, `CHASE_SPEED`, `HIDE_SAFE`, `HALF_ANGLE_COS`. `Tower.gd`: `RANGE`, `AIM_TIME`, `COOLDOWN`, `LEAD`. `Level.gd`: tower count in `_place_towers`.

@@ -1,0 +1,687 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://UI/HUD.gd" id="1_HUD"]
+[ext_resource type="Texture2D" path="res://Art/HUD/divider_v.png" id="2_divider_v"]
+[ext_resource type="Texture2D" path="res://Art/HUD/divider_h.png" id="3_divider_h"]
+[ext_resource type="Texture2D" path="res://Art/HUD/frame_leader.png" id="4_frame_leader"]
+[ext_resource type="Texture2D" path="res://Art/HUD/frame_idle.png" id="5_frame_idle"]
+[ext_resource type="Texture2D" path="res://Art/HUD/portrait_mnki.png" id="6_portrait_mnki"]
+[ext_resource type="Texture2D" path="res://Art/HUD/portrait_ring_leader.png" id="7_portrait_ring_leader"]
+[ext_resource type="Texture2D" path="res://Art/HUD/leader_separator.png" id="8_leader_separator"]
+[ext_resource type="Texture2D" path="res://Art/HUD/portrait_swan.png" id="9_portrait_swan"]
+[ext_resource type="Texture2D" path="res://Art/HUD/portrait_ring_follower.png" id="10_portrait_ring_follower"]
+[ext_resource type="Texture2D" path="res://Art/Icons/icon_heart.png" id="11_icon_heart"]
+[ext_resource type="Texture2D" path="res://Art/Icons/icon_heart_hurt.png" id="12_icon_heart_hurt"]
+[ext_resource type="PackedScene" path="res://UI/Minimap.tscn" id="13_Minimap"]
+[ext_resource type="PackedScene" path="res://UI/Components/KeyHint.tscn" id="14_KeyHint"]
+[ext_resource type="PackedScene" path="res://UI/TouchControls.tscn" id="15_TouchControls"]
+[ext_resource type="PackedScene" path="res://UI/PauseMenu.tscn" id="16_PauseMenu"]
+[ext_resource type="PackedScene" path="res://UI/WinScreen.tscn" id="17_WinScreen"]
+[ext_resource type="PackedScene" path="res://UI/LoseScreen.tscn" id="18_LoseScreen"]
+
+[node name="HUD" type="CanvasLayer"]
+layer = 5
+script = ExtResource("1_HUD")
+
+[node name="Root" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+unique_name_in_owner = true
+
+[node name="SplitFrames" type="Control" parent="Root"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+visible = false
+unique_name_in_owner = true
+
+[node name="DividerV" type="TextureRect" parent="Root/SplitFrames"]
+mouse_filter = 2
+texture = ExtResource("2_divider_v")
+expand_mode = 1
+stretch_mode = 0
+layout_mode = 0
+offset_left = 637.0
+offset_top = 0.0
+offset_right = 643.0
+offset_bottom = 720.0
+unique_name_in_owner = true
+
+[node name="DividerH" type="TextureRect" parent="Root/SplitFrames"]
+mouse_filter = 2
+texture = ExtResource("3_divider_h")
+expand_mode = 1
+stretch_mode = 0
+layout_mode = 0
+offset_left = 0.0
+offset_top = 357.0
+offset_right = 1280.0
+offset_bottom = 363.0
+unique_name_in_owner = true
+
+[node name="FrameA" type="Control" parent="Root/SplitFrames"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 640.0
+offset_bottom = 720.0
+mouse_filter = 2
+unique_name_in_owner = true
+
+[node name="LeaderFrameA" type="NinePatchRect" parent="Root/SplitFrames/FrameA"]
+layout_mode = 1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = -2.0
+offset_bottom = -2.0
+mouse_filter = 2
+texture = ExtResource("4_frame_leader")
+draw_center = false
+patch_margin_left = 14
+patch_margin_top = 14
+patch_margin_right = 14
+patch_margin_bottom = 14
+visible = false
+unique_name_in_owner = true
+
+[node name="IdleFrameA" type="NinePatchRect" parent="Root/SplitFrames/FrameA"]
+layout_mode = 1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = -2.0
+offset_bottom = -2.0
+mouse_filter = 2
+texture = ExtResource("5_frame_idle")
+draw_center = false
+patch_margin_left = 14
+patch_margin_top = 14
+patch_margin_right = 14
+patch_margin_bottom = 14
+visible = true
+unique_name_in_owner = true
+
+[node name="NameLabelA" type="Label" parent="Root/SplitFrames/FrameA"]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 84.0
+offset_right = 434.0
+offset_bottom = 106.0
+mouse_filter = 2
+theme_type_variation = &"LabelHudSmall"
+theme_override_font_sizes/font_size = 15
+text = "MNKI (ground)"
+unique_name_in_owner = true
+
+[node name="FrameB" type="Control" parent="Root/SplitFrames"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 640.0
+offset_bottom = 720.0
+mouse_filter = 2
+unique_name_in_owner = true
+
+[node name="LeaderFrameB" type="NinePatchRect" parent="Root/SplitFrames/FrameB"]
+layout_mode = 1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = -2.0
+offset_bottom = -2.0
+mouse_filter = 2
+texture = ExtResource("4_frame_leader")
+draw_center = false
+patch_margin_left = 14
+patch_margin_top = 14
+patch_margin_right = 14
+patch_margin_bottom = 14
+visible = false
+unique_name_in_owner = true
+
+[node name="IdleFrameB" type="NinePatchRect" parent="Root/SplitFrames/FrameB"]
+layout_mode = 1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = -2.0
+offset_bottom = -2.0
+mouse_filter = 2
+texture = ExtResource("5_frame_idle")
+draw_center = false
+patch_margin_left = 14
+patch_margin_top = 14
+patch_margin_right = 14
+patch_margin_bottom = 14
+visible = true
+unique_name_in_owner = true
+
+[node name="NameLabelB" type="Label" parent="Root/SplitFrames/FrameB"]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 84.0
+offset_right = 434.0
+offset_bottom = 106.0
+mouse_filter = 2
+theme_type_variation = &"LabelHudSmall"
+theme_override_font_sizes/font_size = 15
+text = "MNKI (ground)"
+unique_name_in_owner = true
+
+[node name="TopBar" type="Control" parent="Root"]
+layout_mode = 1
+anchor_right = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 66.0
+mouse_filter = 2
+grow_horizontal = 2
+unique_name_in_owner = true
+
+[node name="FruitPanel" type="PanelContainer" parent="Root/TopBar"]
+layout_mode = 1
+offset_left = 12.0
+offset_top = 10.0
+offset_right = 12.0
+offset_bottom = 10.0
+grow_horizontal = 1
+grow_vertical = 1
+mouse_filter = 2
+theme_type_variation = &"HudPanel"
+custom_minimum_size = Vector2(0.0, 46.0)
+unique_name_in_owner = true
+
+[node name="Row" type="HBoxContainer" parent="Root/TopBar/FruitPanel"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 10
+
+[node name="Info" type="VBoxContainer" parent="Root/TopBar/FruitPanel/Row"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = -2
+custom_minimum_size = Vector2(66.0, 0.0)
+
+[node name="FruitTitle" type="Label" parent="Root/TopBar/FruitPanel/Row/Info"]
+layout_mode = 2
+mouse_filter = 2
+text = "Fruit"
+theme_type_variation = &"LabelHudSmall"
+theme_override_font_sizes/font_size = 14
+
+[node name="FruitCount" type="Label" parent="Root/TopBar/FruitPanel/Row/Info"]
+layout_mode = 2
+mouse_filter = 2
+text = "0 / 0"
+theme_type_variation = &"LabelGold"
+theme_override_font_sizes/font_size = 15
+unique_name_in_owner = true
+
+[node name="Slots" type="HBoxContainer" parent="Root/TopBar/FruitPanel/Row"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_constants/separation = 0
+unique_name_in_owner = true
+
+[node name="LeaderPanel" type="PanelContainer" parent="Root/TopBar"]
+layout_mode = 1
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -230.0
+offset_top = 10.0
+offset_right = 230.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 1
+mouse_filter = 2
+theme_type_variation = &"HudPanel"
+custom_minimum_size = Vector2(460.0, 46.0)
+unique_name_in_owner = true
+
+[node name="Row" type="HBoxContainer" parent="Root/TopBar/LeaderPanel"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 10
+
+[node name="LeaderPortrait" type="Control" parent="Root/TopBar/LeaderPanel/Row"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+mouse_filter = 2
+custom_minimum_size = Vector2(36.0, 36.0)
+
+[node name="LeaderFace" type="TextureRect" parent="Root/TopBar/LeaderPanel/Row/LeaderPortrait"]
+mouse_filter = 2
+texture = ExtResource("6_portrait_mnki")
+expand_mode = 1
+stretch_mode = 5
+layout_mode = 1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_top = 3.0
+offset_right = -3.0
+offset_bottom = -3.0
+texture_filter = 4
+unique_name_in_owner = true
+
+[node name="LeaderRing" type="TextureRect" parent="Root/TopBar/LeaderPanel/Row/LeaderPortrait"]
+mouse_filter = 2
+texture = ExtResource("7_portrait_ring_leader")
+expand_mode = 1
+stretch_mode = 5
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture_filter = 4
+unique_name_in_owner = true
+
+[node name="LeaderInfo" type="VBoxContainer" parent="Root/TopBar/LeaderPanel/Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_constants/separation = -2
+
+[node name="LeaderName" type="Label" parent="Root/TopBar/LeaderPanel/Row/LeaderInfo"]
+layout_mode = 2
+mouse_filter = 2
+text = "MNKI leads"
+theme_type_variation = &"LabelHud"
+theme_override_font_sizes/font_size = 17
+unique_name_in_owner = true
+
+[node name="SwapHint" type="Label" parent="Root/TopBar/LeaderPanel/Row/LeaderInfo"]
+layout_mode = 2
+mouse_filter = 2
+text = "Tab to swap"
+theme_type_variation = &"LabelHudSmall"
+unique_name_in_owner = true
+
+[node name="Separator" type="TextureRect" parent="Root/TopBar/LeaderPanel/Row"]
+mouse_filter = 2
+texture = ExtResource("8_leader_separator")
+expand_mode = 1
+stretch_mode = 0
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+custom_minimum_size = Vector2(2.0, 30.0)
+
+[node name="FollowerPortrait" type="Control" parent="Root/TopBar/LeaderPanel/Row"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+mouse_filter = 2
+custom_minimum_size = Vector2(30.0, 30.0)
+
+[node name="FollowerFace" type="TextureRect" parent="Root/TopBar/LeaderPanel/Row/FollowerPortrait"]
+mouse_filter = 2
+texture = ExtResource("9_portrait_swan")
+expand_mode = 1
+stretch_mode = 5
+layout_mode = 1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_top = 3.0
+offset_right = -3.0
+offset_bottom = -3.0
+texture_filter = 4
+unique_name_in_owner = true
+
+[node name="FollowerRing" type="TextureRect" parent="Root/TopBar/LeaderPanel/Row/FollowerPortrait"]
+mouse_filter = 2
+texture = ExtResource("10_portrait_ring_follower")
+expand_mode = 1
+stretch_mode = 5
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture_filter = 4
+unique_name_in_owner = true
+
+[node name="FollowerInfo" type="VBoxContainer" parent="Root/TopBar/LeaderPanel/Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_constants/separation = -2
+
+[node name="FollowerName" type="Label" parent="Root/TopBar/LeaderPanel/Row/FollowerInfo"]
+layout_mode = 2
+mouse_filter = 2
+text = "Swan"
+theme_type_variation = &"LabelHud"
+unique_name_in_owner = true
+
+[node name="FollowerState" type="Label" parent="Root/TopBar/LeaderPanel/Row/FollowerInfo"]
+layout_mode = 2
+mouse_filter = 2
+text = "following"
+theme_type_variation = &"LabelHudSmall"
+unique_name_in_owner = true
+
+[node name="PeacePanel" type="PanelContainer" parent="Root/TopBar"]
+layout_mode = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -300.0
+offset_top = 10.0
+offset_right = -12.0
+offset_bottom = 10.0
+grow_horizontal = 0
+grow_vertical = 1
+mouse_filter = 2
+theme_type_variation = &"HudPanel"
+custom_minimum_size = Vector2(288.0, 46.0)
+unique_name_in_owner = true
+
+[node name="Row" type="HBoxContainer" parent="Root/TopBar/PeacePanel"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="HeartBox" type="Control" parent="Root/TopBar/PeacePanel/Row"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+mouse_filter = 2
+custom_minimum_size = Vector2(24.0, 24.0)
+
+[node name="HeartIcon" type="TextureRect" parent="Root/TopBar/PeacePanel/Row/HeartBox"]
+mouse_filter = 2
+texture = ExtResource("11_icon_heart")
+expand_mode = 1
+stretch_mode = 5
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(12.0, 12.0)
+texture_filter = 4
+unique_name_in_owner = true
+
+[node name="HeartHurtIcon" type="TextureRect" parent="Root/TopBar/PeacePanel/Row/HeartBox"]
+mouse_filter = 2
+texture = ExtResource("12_icon_heart_hurt")
+expand_mode = 1
+stretch_mode = 5
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(12.0, 12.0)
+texture_filter = 4
+visible = false
+unique_name_in_owner = true
+
+[node name="Info" type="VBoxContainer" parent="Root/TopBar/PeacePanel/Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_constants/separation = -2
+
+[node name="HurtLabel" type="Label" parent="Root/TopBar/PeacePanel/Row/Info"]
+layout_mode = 2
+mouse_filter = 2
+text = "Teddies hurt: 0"
+theme_type_variation = &"LabelHud"
+theme_override_font_sizes/font_size = 14
+unique_name_in_owner = true
+
+[node name="StatsLabel" type="Label" parent="Root/TopBar/PeacePanel/Row/Info"]
+layout_mode = 2
+mouse_filter = 2
+text = "Traps 0  |  Walked back 0"
+theme_type_variation = &"LabelHudSmall"
+unique_name_in_owner = true
+
+[node name="TimerLabel" type="Label" parent="Root/TopBar/PeacePanel/Row"]
+layout_mode = 2
+mouse_filter = 2
+text = "0:00"
+theme_type_variation = &"LabelGold"
+theme_override_font_sizes/font_size = 20
+horizontal_alignment = 2
+vertical_alignment = 1
+custom_minimum_size = Vector2(64.0, 0.0)
+unique_name_in_owner = true
+
+[node name="Minimap" parent="Root" instance=ExtResource("13_Minimap")]
+layout_mode = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -14.0
+offset_top = 70.0
+offset_right = -14.0
+offset_bottom = 70.0
+grow_horizontal = 0
+grow_vertical = 1
+mouse_filter = 2
+unique_name_in_owner = true
+
+[node name="KeyHints" type="Control" parent="Root"]
+layout_mode = 1
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 14.0
+offset_top = -36.0
+offset_right = 14.0
+offset_bottom = -36.0
+grow_horizontal = 1
+grow_vertical = 0
+mouse_filter = 2
+unique_name_in_owner = true
+
+[node name="HintsMnki" type="HBoxContainer" parent="Root/KeyHints"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 16
+visible = true
+unique_name_in_owner = true
+
+[node name="Hint0" parent="Root/KeyHints/HintsMnki" instance=ExtResource("14_KeyHint")]
+layout_mode = 2
+key_text = "WASD"
+desc_text = "move"
+
+[node name="Hint1" parent="Root/KeyHints/HintsMnki" instance=ExtResource("14_KeyHint")]
+layout_mode = 2
+key_text = "Shift"
+desc_text = "sneak"
+
+[node name="Hint2" parent="Root/KeyHints/HintsMnki" instance=ExtResource("14_KeyHint")]
+layout_mode = 2
+key_text = "F"
+desc_text = "cut hedge"
+
+[node name="Hint3" parent="Root/KeyHints/HintsMnki" instance=ExtResource("14_KeyHint")]
+layout_mode = 2
+key_text = "E"
+desc_text = "disarm trap"
+
+[node name="Hint4" parent="Root/KeyHints/HintsMnki" instance=ExtResource("14_KeyHint")]
+layout_mode = 2
+key_text = "Tab"
+desc_text = "swap"
+
+[node name="Hint5" parent="Root/KeyHints/HintsMnki" instance=ExtResource("14_KeyHint")]
+layout_mode = 2
+key_text = "Click"
+desc_text = "command"
+
+[node name="Hint6" parent="Root/KeyHints/HintsMnki" instance=ExtResource("14_KeyHint")]
+layout_mode = 2
+key_text = "H"
+desc_text = "hold"
+
+[node name="Hint7" parent="Root/KeyHints/HintsMnki" instance=ExtResource("14_KeyHint")]
+layout_mode = 2
+key_text = "Esc"
+desc_text = "pause"
+
+[node name="HintsSwan" type="HBoxContainer" parent="Root/KeyHints"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 16
+visible = false
+unique_name_in_owner = true
+
+[node name="Hint0" parent="Root/KeyHints/HintsSwan" instance=ExtResource("14_KeyHint")]
+layout_mode = 2
+key_text = "WASD"
+desc_text = "fly"
+
+[node name="Hint1" parent="Root/KeyHints/HintsSwan" instance=ExtResource("14_KeyHint")]
+layout_mode = 2
+key_text = "Space"
+desc_text = "chirp"
+
+[node name="Hint2" parent="Root/KeyHints/HintsSwan" instance=ExtResource("14_KeyHint")]
+layout_mode = 2
+key_text = "Tab"
+desc_text = "swap"
+
+[node name="Hint3" parent="Root/KeyHints/HintsSwan" instance=ExtResource("14_KeyHint")]
+layout_mode = 2
+key_text = "Click"
+desc_text = "command"
+
+[node name="Hint4" parent="Root/KeyHints/HintsSwan" instance=ExtResource("14_KeyHint")]
+layout_mode = 2
+key_text = "H"
+desc_text = "hold"
+
+[node name="Hint5" parent="Root/KeyHints/HintsSwan" instance=ExtResource("14_KeyHint")]
+layout_mode = 2
+key_text = "Esc"
+desc_text = "pause"
+
+[node name="TouchControls" parent="Root" instance=ExtResource("15_TouchControls")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+unique_name_in_owner = true
+
+[node name="Toast" type="PanelContainer" parent="Root"]
+layout_mode = 1
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -440.0
+offset_top = -98.0
+offset_right = 440.0
+offset_bottom = -56.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_type_variation = &"ToastPanel"
+visible = false
+unique_name_in_owner = true
+
+[node name="ToastLabel" type="Label" parent="Root/Toast"]
+layout_mode = 2
+mouse_filter = 2
+text = "Hello!"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+custom_minimum_size = Vector2(840.0, 0.0)
+theme_override_font_sizes/font_size = 18
+unique_name_in_owner = true
+
+[node name="PauseMenu" parent="Root" instance=ExtResource("16_PauseMenu")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+visible = false
+unique_name_in_owner = true
+
+[node name="WinScreen" parent="Root" instance=ExtResource("17_WinScreen")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+visible = false
+unique_name_in_owner = true
+
+[node name="LoseScreen" parent="Root" instance=ExtResource("18_LoseScreen")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+visible = false
+unique_name_in_owner = true
+
+[node name="PortraitBank" type="Control" parent="Root"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 1.0
+offset_bottom = 1.0
+mouse_filter = 2
+visible = false
+unique_name_in_owner = true
+
+[node name="PortraitMnki" type="TextureRect" parent="Root/PortraitBank"]
+mouse_filter = 2
+texture = ExtResource("6_portrait_mnki")
+expand_mode = 1
+stretch_mode = 5
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 36.0
+offset_bottom = 36.0
+texture_filter = 4
+unique_name_in_owner = true
+
+[node name="PortraitSwan" type="TextureRect" parent="Root/PortraitBank"]
+mouse_filter = 2
+texture = ExtResource("9_portrait_swan")
+expand_mode = 1
+stretch_mode = 5
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 36.0
+offset_bottom = 36.0
+texture_filter = 4
+unique_name_in_owner = true

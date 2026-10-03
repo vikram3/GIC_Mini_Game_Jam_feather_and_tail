@@ -1,0 +1,24 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://UI/Components/VolumeRow.gd" id="1_VolumeRow"]
+
+[node name="VolumeRow" type="HBoxContainer"]
+theme_override_constants/separation = 14
+key = "master"
+label_text = "Master volume"
+script = ExtResource("1_VolumeRow")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+custom_minimum_size = Vector2(160.0, 0.0)
+text = "Master volume"
+unique_name_in_owner = true
+
+[node name="Slider" type="HSlider" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+custom_minimum_size = Vector2(240.0, 26.0)
+max_value = 1.0
+step = 0.05
+unique_name_in_owner = true

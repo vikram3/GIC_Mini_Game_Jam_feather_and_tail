@@ -1,0 +1,30 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://UI/Components/KeyHint.gd" id="1_KeyHint"]
+
+[node name="KeyHint" type="HBoxContainer"]
+theme_override_constants/separation = 5
+key_text = "Key"
+desc_text = "action"
+script = ExtResource("1_KeyHint")
+
+[node name="KeyCap" type="PanelContainer" parent="."]
+layout_mode = 2
+custom_minimum_size = Vector2(0.0, 22.0)
+theme_type_variation = &"KeyCapPanel"
+
+[node name="KeyLabel" type="Label" parent="KeyCap"]
+layout_mode = 2
+theme_type_variation = &"LabelKey"
+text = "Key"
+horizontal_alignment = 1
+vertical_alignment = 1
+unique_name_in_owner = true
+
+[node name="Desc" type="Label" parent="."]
+layout_mode = 2
+theme_type_variation = &"LabelHint"
+text = "action"
+vertical_alignment = 1
+modulate = Color(1.0, 1.0, 1.0, 0.85)
+unique_name_in_owner = true

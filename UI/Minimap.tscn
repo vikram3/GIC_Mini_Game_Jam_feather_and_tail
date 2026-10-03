@@ -1,0 +1,152 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://UI/Minimap.gd" id="1_Minimap"]
+[ext_resource type="Texture2D" path="res://Art/HUD/minimap_frame.png" id="2_minimap_frame"]
+[ext_resource type="Texture2D" path="res://Art/HUD/minimap_mnki.png" id="3_minimap_mnki"]
+[ext_resource type="Texture2D" path="res://Art/HUD/minimap_swan.png" id="4_minimap_swan"]
+[ext_resource type="Texture2D" path="res://Art/HUD/minimap_trap.png" id="5_minimap_trap"]
+[ext_resource type="Texture2D" path="res://Art/HUD/minimap_apple.png" id="6_minimap_apple"]
+[ext_resource type="Texture2D" path="res://Art/HUD/minimap_pear.png" id="7_minimap_pear"]
+[ext_resource type="Texture2D" path="res://Art/HUD/minimap_guard.png" id="8_minimap_guard"]
+
+[node name="Minimap" type="Control"]
+custom_minimum_size = Vector2(200.0, 200.0)
+mouse_filter = 2
+script = ExtResource("1_Minimap")
+
+[node name="Frame" type="NinePatchRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_minimap_frame")
+patch_margin_left = 18
+patch_margin_top = 18
+patch_margin_right = 18
+patch_margin_bottom = 18
+unique_name_in_owner = true
+
+[node name="Map" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 192.0
+offset_bottom = 192.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 0
+texture_filter = 1
+unique_name_in_owner = true
+
+[node name="Markers" type="Control" parent="."]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 192.0
+offset_bottom = 192.0
+mouse_filter = 2
+clip_contents = true
+unique_name_in_owner = true
+
+[node name="Traps" type="Control" parent="Markers"]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+unique_name_in_owner = true
+
+[node name="Fruits" type="Control" parent="Markers"]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+unique_name_in_owner = true
+
+[node name="Guards" type="Control" parent="Markers"]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+unique_name_in_owner = true
+
+[node name="MnkiMarker" type="TextureRect" parent="Markers"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 7.0
+offset_bottom = 7.0
+mouse_filter = 2
+texture = ExtResource("3_minimap_mnki")
+expand_mode = 1
+stretch_mode = 5
+unique_name_in_owner = true
+
+[node name="SwanMarker" type="TextureRect" parent="Markers"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 7.0
+offset_bottom = 7.0
+mouse_filter = 2
+texture = ExtResource("4_minimap_swan")
+expand_mode = 1
+stretch_mode = 5
+unique_name_in_owner = true
+
+[node name="Templates" type="Control" parent="."]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 1.0
+offset_bottom = 1.0
+mouse_filter = 2
+visible = false
+unique_name_in_owner = true
+
+[node name="TrapMarker" type="TextureRect" parent="Templates"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 5.0
+offset_bottom = 5.0
+mouse_filter = 2
+texture = ExtResource("5_minimap_trap")
+expand_mode = 1
+stretch_mode = 5
+unique_name_in_owner = true
+
+[node name="AppleMarker" type="TextureRect" parent="Templates"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 6.0
+offset_bottom = 6.0
+mouse_filter = 2
+texture = ExtResource("6_minimap_apple")
+expand_mode = 1
+stretch_mode = 5
+unique_name_in_owner = true
+
+[node name="PearMarker" type="TextureRect" parent="Templates"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 6.0
+offset_bottom = 6.0
+mouse_filter = 2
+texture = ExtResource("7_minimap_pear")
+expand_mode = 1
+stretch_mode = 5
+unique_name_in_owner = true
+
+[node name="GuardMarker" type="TextureRect" parent="Templates"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 6.0
+offset_bottom = 6.0
+mouse_filter = 2
+texture = ExtResource("8_minimap_guard")
+expand_mode = 1
+stretch_mode = 5
+unique_name_in_owner = true

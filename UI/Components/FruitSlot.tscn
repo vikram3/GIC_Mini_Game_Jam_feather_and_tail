@@ -1,0 +1,56 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://UI/Components/FruitSlot.gd" id="1_FruitSlot"]
+[ext_resource type="Texture2D" path="res://Art/HUD/fruit_slot.png" id="2_fruit_slot"]
+[ext_resource type="Texture2D" path="res://Art/Icons/icon_apple.png" id="3_icon_apple"]
+[ext_resource type="Texture2D" path="res://Art/Icons/icon_pear.png" id="4_icon_pear"]
+
+[node name="FruitSlot" type="Control"]
+custom_minimum_size = Vector2(34.0, 34.0)
+mouse_filter = 2
+script = ExtResource("1_FruitSlot")
+
+[node name="SlotBg" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_fruit_slot")
+expand_mode = 1
+stretch_mode = 5
+texture_filter = 4
+unique_name_in_owner = true
+
+[node name="Apple" type="TextureRect" parent="."]
+layout_mode = 1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
+mouse_filter = 2
+texture = ExtResource("3_icon_apple")
+expand_mode = 1
+stretch_mode = 5
+texture_filter = 4
+unique_name_in_owner = true
+
+[node name="Pear" type="TextureRect" parent="."]
+layout_mode = 1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
+mouse_filter = 2
+texture = ExtResource("4_icon_pear")
+expand_mode = 1
+stretch_mode = 5
+texture_filter = 4
+visible = false
+unique_name_in_owner = true

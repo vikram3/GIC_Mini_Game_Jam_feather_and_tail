@@ -1,0 +1,45 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" path="res://Art/Screens/rotate_phone.png" id="1_rotate_phone"]
+
+[node name="RotateDevice" type="CanvasLayer"]
+layer = 120
+visible = false
+
+[node name="Bg" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.03, 0.07, 0.05, 1.0)
+
+[node name="Center" type="CenterContainer" parent="Bg"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Box" type="VBoxContainer" parent="Bg/Center"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Icon" type="TextureRect" parent="Bg/Center/Box"]
+layout_mode = 2
+custom_minimum_size = Vector2(220.0, 220.0)
+texture = ExtResource("1_rotate_phone")
+expand_mode = 1
+stretch_mode = 5
+unique_name_in_owner = true
+
+[node name="Message" type="Label" parent="Bg/Center/Box"]
+layout_mode = 2
+theme_type_variation = &"LabelTitle"
+text = "Please turn your device sideways\n(landscape) to play"
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 64
+unique_name_in_owner = true

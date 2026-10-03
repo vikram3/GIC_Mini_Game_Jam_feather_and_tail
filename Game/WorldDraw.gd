@@ -70,20 +70,9 @@ var fog_version: int = -1
 var anim_water: Array = []
 var anim_lamps: Array = []
 var anim_ponds: Array = []
-var bubble_sb: Dictionary = {}   # speech bubble styles per speaker kind
 
-const BUBBLE_FS := 10
-const NAME_FS := 8
-const BUBBLE_W := 128.0
-const BUBBLE_STYLE := {
-    "mnki": [Color(1.0, 0.95, 0.88), Color(0.85, 0.2, 0.2), Color(0.7, 0.12, 0.12), "MNKI"],
-    "swan": [Color(0.96, 0.98, 1.0), Color(0.45, 0.65, 0.95), Color(0.22, 0.42, 0.80), "Swan"],
-    "guard": [Color(0.98, 0.92, 0.78), Color(0.60, 0.38, 0.18), Color(0.50, 0.28, 0.10), "Teddy"],
-    "tower": [Color(0.98, 0.90, 0.80), Color(0.72, 0.28, 0.20), Color(0.62, 0.20, 0.14), "Sling Teddy"],
-}
-
-
-func _ready() -> void:
+## Called by Game.gd once `game` is set (the node now lives in Game.tscn, so _ready is too early).
+func setup() -> void:
     cv = self
     seed_mix = PlayerData.level_seed & 0xffff
     var level: LevelScript = game.level
@@ -115,12 +104,6 @@ func _ready() -> void:
                     anim_lamps.append(t2)
                 elif pk == "pond":
                     anim_ponds.append(t2)
-
-    for k in BUBBLE_STYLE:
-        var sb := StyleBoxFlat.new()
-        sb.set_corner_radius_all(7)
-        sb.set_border_width_all(2)
-        bubble_sb[k] = sb
 
     # layers, in draw order
     chunks_x = ceili(float(LevelScript.W) / float(CHUNK))
@@ -346,8 +329,7 @@ func _draw_actors() -> void:
         c.a *= 1.0 - k2
         cv.draw_circle(pt["p"], float(pt["size"]) * (1.0 - 0.5 * k2), c)
 
-    # speech bubbles on top of everything
-    _draw_bubbles(font)
+    # (speech bubbles are SpeechBubble.tscn nodes now - see Game/BubbleLayer.gd)
 
 
 func _bar(p: Vector2, frac: float, col: Color) -> void:
@@ -771,7 +753,7 @@ func _draw_guard(g, font: Font) -> void:
     elif g.state == GuardScript.RECOVER:
         icon = "~"
     if icon != "":
-        cv.draw_string(font, p + Vector2(-14, -42), icon, HORIZONTAL_ALIGNMENT_CENTER, 28.0, 16, Color(1, 0.95, 0.4))
+        cv.draw_texture_rect(game.alert_tex[icon], Rect2(p + Vector2(-11, -64), Vector2(22, 22)), false)
 
 
 func _draw_teddy(g, p: Vector2, f: Vector2) -> void:
@@ -903,7 +885,7 @@ func _draw_tower(tw, lit: bool, font: Font) -> void:
     elif tw.state == 2:
         icon = "!"
     if icon != "":
-        cv.draw_string(font, c + Vector2(-14, -52), icon, HORIZONTAL_ALIGNMENT_CENTER, 28.0, 16, Color(1, 0.95, 0.4))
+        cv.draw_texture_rect(game.alert_tex[icon], Rect2(c + Vector2(-11, -76), Vector2(22, 22)), false)
     if tw.alert > 0.02:
         var bp: Vector2 = c + Vector2(-14, -48)
         cv.draw_rect(Rect2(bp, Vector2(28, 4)), Color(0, 0, 0, 0.6))
@@ -949,83 +931,3 @@ func _draw_dizzy_stars() -> void:
         var sp: Vector2 = c + Vector2(cos(a) * 13.0, sin(a) * 4.5)
         cv.draw_circle(sp, 2.6, GOLD)
         cv.draw_circle(sp, 1.2, Color(1, 1, 0.8))
-
-
-# ============================================================ speech bubbles
-
-func _bubble_anchor(b: Dictionary) -> Vector2:
-    var p: Vector2 = b["src"].pos
-    var kind: String = b["kind"]
-    var close: bool = game.mnki.pos.distance_to(game.swan.pos) < 80.0
-    match kind:
-        "mnki":
-            return p + Vector2(-34.0 if close else 0.0, -36.0)
-        "swan":
-            return p + Vector2(34.0 if close else 0.0, -46.0)
-        "guard":
-            return p + Vector2(0, -58)
-    return p + Vector2(0, -56)       # sling teddy on its tower
-
-
-func _wrap(font: Font, text: String, fs: int, max_w: float) -> Array:
-    var lines: Array = []
-    var cur: String = ""
-    for word in text.split(" "):
-        var trial: String = word if cur == "" else cur + " " + word
-        if cur != "" and font.get_string_size(trial, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x > max_w:
-            lines.append(cur)
-            cur = word
-        else:
-            cur = trial
-    if cur != "":
-        lines.append(cur)
-    return lines
-
-
-func _draw_bubbles(font: Font) -> void:
-    var level: LevelScript = game.level
-    for b in game.speech.bubbles:
-        var kind: String = b["kind"]
-        if kind == "guard" or kind == "tower":
-            if not game.vis_tiles.has(level.tile_of(b["src"].pos)):
-                continue
-        var age: float = b["age"]
-        var dur: float = b["dur"]
-        var a: float = clampf(age / 0.12, 0.0, 1.0) * clampf((dur - age) / 0.35, 0.0, 1.0)
-        if a <= 0.01:
-            continue
-        var lines: Array = b["lines"]
-        if lines.is_empty():
-            lines = _wrap(font, b["text"], BUBBLE_FS, BUBBLE_W)
-            b["lines"] = lines
-        var st: Array = BUBBLE_STYLE[kind]
-        var lh: float = font.get_height(BUBBLE_FS)
-        var tw_w: float = font.get_string_size(st[3], HORIZONTAL_ALIGNMENT_LEFT, -1, NAME_FS).x
-        var w: float = tw_w
-        for l in lines:
-            w = maxf(w, font.get_string_size(l, HORIZONTAL_ALIGNMENT_LEFT, -1, BUBBLE_FS).x)
-        var name_h: float = font.get_height(NAME_FS)
-        var bw: float = w + 14.0
-        var bh: float = float(lines.size()) * lh + name_h + 8.0
-        var anchor: Vector2 = _bubble_anchor(b)
-        var pop: float = 1.0 + 0.12 * (1.0 - clampf(age / 0.18, 0.0, 1.0))
-        var rect := Rect2(anchor + Vector2(-bw * 0.5, -bh - 7.0 * pop), Vector2(bw, bh))
-        var sb: StyleBoxFlat = bubble_sb[kind]
-        var fill: Color = st[0]
-        var edge: Color = st[1]
-        fill.a = a * 0.96
-        edge.a = a
-        sb.bg_color = fill
-        sb.border_color = edge
-        cv.draw_style_box(sb, rect)
-        # little tail pointing at the speaker
-        var tx: float = clampf(b["src"].pos.x - rect.position.x, 10.0, bw - 10.0) + rect.position.x
-        var ty: float = rect.position.y + bh
-        cv.draw_colored_polygon(PackedVector2Array([Vector2(tx - 5, ty - 1), Vector2(tx + 5, ty - 1), Vector2(tx, ty + 6)]), edge)
-        cv.draw_colored_polygon(PackedVector2Array([Vector2(tx - 3, ty - 2), Vector2(tx + 3, ty - 2), Vector2(tx, ty + 3)]), fill)
-        var ncol: Color = st[2]
-        ncol.a = a
-        cv.draw_string(font, rect.position + Vector2(7, 3.0 + font.get_ascent(NAME_FS)), st[3], HORIZONTAL_ALIGNMENT_LEFT, -1, NAME_FS, ncol)
-        var tcol := Color(0.16, 0.12, 0.10, a)
-        for i in range(lines.size()):
-            cv.draw_string(font, rect.position + Vector2(7, 3.0 + name_h + float(i) * lh + font.get_ascent(BUBBLE_FS)), lines[i], HORIZONTAL_ALIGNMENT_LEFT, -1, BUBBLE_FS, tcol)

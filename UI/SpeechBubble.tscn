@@ -1,0 +1,160 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://UI/SpeechBubble.gd" id="1_SpeechBubble"]
+[ext_resource type="Texture2D" path="res://Art/Bubbles/bubble_mnki.png" id="2_bubble_mnki"]
+[ext_resource type="Texture2D" path="res://Art/Bubbles/bubble_tail_mnki.png" id="3_bubble_tail_mnki"]
+[ext_resource type="Texture2D" path="res://Art/Bubbles/bubble_swan.png" id="4_bubble_swan"]
+[ext_resource type="Texture2D" path="res://Art/Bubbles/bubble_tail_swan.png" id="5_bubble_tail_swan"]
+[ext_resource type="Texture2D" path="res://Art/Bubbles/bubble_guard.png" id="6_bubble_guard"]
+[ext_resource type="Texture2D" path="res://Art/Bubbles/bubble_tail_guard.png" id="7_bubble_tail_guard"]
+[ext_resource type="Texture2D" path="res://Art/Bubbles/bubble_tower.png" id="8_bubble_tower"]
+[ext_resource type="Texture2D" path="res://Art/Bubbles/bubble_tail_tower.png" id="9_bubble_tail_tower"]
+
+[node name="SpeechBubble" type="Control"]
+mouse_filter = 2
+script = ExtResource("1_SpeechBubble")
+
+[node name="Backgrounds" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+
+[node name="Tails" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+
+[node name="BgMnki" type="NinePatchRect" parent="Backgrounds"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 128.0
+offset_bottom = 40.0
+mouse_filter = 2
+texture = ExtResource("2_bubble_mnki")
+patch_margin_left = 14
+patch_margin_top = 14
+patch_margin_right = 14
+patch_margin_bottom = 14
+visible = true
+unique_name_in_owner = true
+
+[node name="TailMnki" type="TextureRect" parent="Tails"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 16.0
+offset_bottom = 10.0
+mouse_filter = 2
+texture = ExtResource("3_bubble_tail_mnki")
+expand_mode = 1
+stretch_mode = 0
+visible = true
+unique_name_in_owner = true
+
+[node name="BgSwan" type="NinePatchRect" parent="Backgrounds"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 128.0
+offset_bottom = 40.0
+mouse_filter = 2
+texture = ExtResource("4_bubble_swan")
+patch_margin_left = 14
+patch_margin_top = 14
+patch_margin_right = 14
+patch_margin_bottom = 14
+visible = false
+unique_name_in_owner = true
+
+[node name="TailSwan" type="TextureRect" parent="Tails"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 16.0
+offset_bottom = 10.0
+mouse_filter = 2
+texture = ExtResource("5_bubble_tail_swan")
+expand_mode = 1
+stretch_mode = 0
+visible = false
+unique_name_in_owner = true
+
+[node name="BgGuard" type="NinePatchRect" parent="Backgrounds"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 128.0
+offset_bottom = 40.0
+mouse_filter = 2
+texture = ExtResource("6_bubble_guard")
+patch_margin_left = 14
+patch_margin_top = 14
+patch_margin_right = 14
+patch_margin_bottom = 14
+visible = false
+unique_name_in_owner = true
+
+[node name="TailGuard" type="TextureRect" parent="Tails"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 16.0
+offset_bottom = 10.0
+mouse_filter = 2
+texture = ExtResource("7_bubble_tail_guard")
+expand_mode = 1
+stretch_mode = 0
+visible = false
+unique_name_in_owner = true
+
+[node name="BgTower" type="NinePatchRect" parent="Backgrounds"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 128.0
+offset_bottom = 40.0
+mouse_filter = 2
+texture = ExtResource("8_bubble_tower")
+patch_margin_left = 14
+patch_margin_top = 14
+patch_margin_right = 14
+patch_margin_bottom = 14
+visible = false
+unique_name_in_owner = true
+
+[node name="TailTower" type="TextureRect" parent="Tails"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 16.0
+offset_bottom = 10.0
+mouse_filter = 2
+texture = ExtResource("9_bubble_tail_tower")
+expand_mode = 1
+stretch_mode = 0
+visible = false
+unique_name_in_owner = true
+
+[node name="NameLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 7.0
+offset_top = 3.0
+offset_right = 107.0
+offset_bottom = 13.0
+mouse_filter = 2
+theme_type_variation = &"LabelBubbleName"
+text = "MNKI"
+unique_name_in_owner = true
+
+[node name="TextLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 7.0
+offset_top = 13.0
+offset_right = 121.0
+offset_bottom = 37.0
+mouse_filter = 2
+theme_type_variation = &"LabelBubble"
+text = "Hello!"
+autowrap_mode = 3
+unique_name_in_owner = true

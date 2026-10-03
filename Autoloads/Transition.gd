@@ -1,20 +1,14 @@
 extends CanvasLayer
-## Autoload "Transition": fades to black, swaps the scene, fades back in.
+## Autoload "Transition" (Autoloads/Transition.tscn): fades to black, swaps the scene, fades back in.
 ##   Transition.go("res://Game/Game.tscn")
 ##   Transition.reload()          # restart the current scene
+## The black rectangle is the `Fade` node - give it a TextureRect / loading art instead if you like.
 
-var rect: ColorRect
+@onready var rect: CanvasItem = %Fade
 var busy: bool = false
 
 
 func _ready() -> void:
-    layer = 100
-    process_mode = Node.PROCESS_MODE_ALWAYS
-    rect = ColorRect.new()
-    rect.color = Color(0.03, 0.07, 0.05, 1.0)
-    rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
-    add_child(rect)
-    rect.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
     rect.modulate.a = 1.0          # start black, fade the title screen in
     _fade_to(0.0, 0.6)
 

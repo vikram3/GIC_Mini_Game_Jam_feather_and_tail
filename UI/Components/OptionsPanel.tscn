@@ -1,0 +1,43 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://UI/Components/OptionsPanel.gd" id="1_OptionsPanel"]
+[ext_resource type="PackedScene" path="res://UI/Components/VolumeRow.tscn" id="2_VolumeRow"]
+
+[node name="OptionsPanel" type="VBoxContainer"]
+theme_override_constants/separation = 14
+script = ExtResource("1_OptionsPanel")
+
+[node name="Heading" type="Label" parent="."]
+layout_mode = 2
+theme_type_variation = &"LabelHeading"
+text = "Sound"
+unique_name_in_owner = true
+
+[node name="Rows" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 8
+unique_name_in_owner = true
+
+[node name="MasterRow" parent="Rows" instance=ExtResource("2_VolumeRow")]
+layout_mode = 2
+key = "master"
+label_text = "Master volume"
+unique_name_in_owner = true
+
+[node name="MusicRow" parent="Rows" instance=ExtResource("2_VolumeRow")]
+layout_mode = 2
+key = "music"
+label_text = "Music"
+unique_name_in_owner = true
+
+[node name="SfxRow" parent="Rows" instance=ExtResource("2_VolumeRow")]
+layout_mode = 2
+key = "sfx"
+label_text = "Sound effects"
+unique_name_in_owner = true
+
+[node name="MuteHint" type="Label" parent="."]
+layout_mode = 2
+theme_type_variation = &"LabelMuted"
+text = "Press M at any time to mute / unmute."
+unique_name_in_owner = true

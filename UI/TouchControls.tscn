@@ -1,0 +1,175 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://UI/TouchControls.gd" id="1_TouchControls"]
+[ext_resource type="Texture2D" path="res://Art/Touch/joy_base.png" id="2_joy_base"]
+[ext_resource type="Texture2D" path="res://Art/Touch/joy_knob.png" id="3_joy_knob"]
+[ext_resource type="PackedScene" path="res://UI/Components/TouchButton.tscn" id="4_TouchButton"]
+[ext_resource type="Texture2D" path="res://Art/Touch/icon_pause.png" id="5_icon_pause"]
+
+[node name="TouchControls" type="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_TouchControls")
+
+[node name="JoyZone" type="Control" parent="."]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 230.0
+offset_right = 500.0
+offset_bottom = 720.0
+mouse_filter = 2
+unique_name_in_owner = true
+
+[node name="Joystick" type="Control" parent="."]
+layout_mode = 0
+offset_left = 72.0
+offset_top = 492.0
+offset_right = 228.0
+offset_bottom = 648.0
+mouse_filter = 2
+unique_name_in_owner = true
+
+[node name="Base" type="TextureRect" parent="Joystick"]
+mouse_filter = 2
+texture = ExtResource("2_joy_base")
+expand_mode = 1
+stretch_mode = 5
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+unique_name_in_owner = true
+
+[node name="Knob" type="TextureRect" parent="Joystick"]
+mouse_filter = 2
+texture = ExtResource("3_joy_knob")
+expand_mode = 1
+stretch_mode = 5
+layout_mode = 0
+offset_left = 42.0
+offset_top = 42.0
+offset_right = 114.0
+offset_bottom = 114.0
+unique_name_in_owner = true
+
+[node name="Buttons" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+unique_name_in_owner = true
+
+[node name="CutButton" parent="Buttons" instance=ExtResource("4_TouchButton")]
+layout_mode = 0
+offset_left = 1104.0
+offset_top = 534.0
+offset_right = 1216.0
+offset_bottom = 646.0
+action = "cut"
+mode = "hold"
+who = "mnki"
+cond = ""
+label_text = "CUT"
+unique_name_in_owner = true
+
+[node name="ChirpButton" parent="Buttons" instance=ExtResource("4_TouchButton")]
+layout_mode = 0
+offset_left = 1104.0
+offset_top = 534.0
+offset_right = 1216.0
+offset_bottom = 646.0
+action = "chirp"
+mode = "tap"
+who = "swan"
+cond = ""
+label_text = "CHIRP"
+unique_name_in_owner = true
+
+[node name="DisarmButton" parent="Buttons" instance=ExtResource("4_TouchButton")]
+layout_mode = 0
+offset_left = 986.0
+offset_top = 611.0
+offset_right = 1074.0
+offset_bottom = 699.0
+action = "disarm"
+mode = "hold"
+who = "mnki"
+cond = ""
+label_text = "DISARM"
+unique_name_in_owner = true
+
+[node name="SneakButton" parent="Buttons" instance=ExtResource("4_TouchButton")]
+layout_mode = 0
+offset_left = 1002.0
+offset_top = 497.0
+offset_right = 1078.0
+offset_bottom = 573.0
+action = "sneak"
+mode = "toggle"
+who = "mnki"
+cond = ""
+label_text = "SNEAK"
+unique_name_in_owner = true
+
+[node name="SwapButton" parent="Buttons" instance=ExtResource("4_TouchButton")]
+layout_mode = 0
+offset_left = 1155.0
+offset_top = 410.0
+offset_right = 1235.0
+offset_bottom = 490.0
+action = "switch_leader"
+mode = "tap"
+who = "any"
+cond = ""
+label_text = "SWAP"
+unique_name_in_owner = true
+
+[node name="HoldButton" parent="Buttons" instance=ExtResource("4_TouchButton")]
+layout_mode = 0
+offset_left = 866.0
+offset_top = 628.0
+offset_right = 934.0
+offset_bottom = 696.0
+action = "hold_toggle"
+mode = "tap"
+who = "any"
+cond = ""
+label_text = "HOLD"
+unique_name_in_owner = true
+
+[node name="CancelButton" parent="Buttons" instance=ExtResource("4_TouchButton")]
+layout_mode = 0
+offset_left = 870.0
+offset_top = 562.0
+offset_right = 930.0
+offset_bottom = 622.0
+action = "cancel"
+mode = "tap"
+who = "any"
+cond = "goto"
+label_text = "X"
+unique_name_in_owner = true
+
+[node name="PauseButton" parent="Buttons" instance=ExtResource("4_TouchButton")]
+layout_mode = 0
+offset_left = 917.0
+offset_top = 11.0
+offset_right = 961.0
+offset_bottom = 55.0
+action = "pause"
+mode = "tap"
+who = "any"
+cond = ""
+label_text = ""
+glyph = ExtResource("5_icon_pause")
+unique_name_in_owner = true

@@ -1,12 +1,148 @@
-[gd_scene format=3 uid="uid://bcao6u2ugblq"]
+[gd_scene format=3]
 
-[ext_resource type="Script" uid="uid://blgx2hfdxvm32" path="res://Menus/Main_Menu.gd" id="1_menu"]
+[ext_resource type="Script" path="res://Menus/Main_Menu.gd" id="1_Main_Menu"]
+[ext_resource type="Texture2D" path="res://Art/Menu/menu_background.png" id="2_menu_background"]
+[ext_resource type="Texture2D" path="res://Art/Menu/title_logo.png" id="3_title_logo"]
+[ext_resource type="PackedScene" path="res://Menus/HowToPlay.tscn" id="4_HowToPlay"]
+[ext_resource type="PackedScene" path="res://Menus/OptionsMenu.tscn" id="5_OptionsMenu"]
 
-[node name="MainMenu" type="Control" unique_id=847649244]
-layout_mode = 3
+[node name="MainMenu" type="Control"]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_menu")
+script = ExtResource("1_Main_Menu")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_menu_background")
+expand_mode = 1
+stretch_mode = 6
+unique_name_in_owner = true
+
+[node name="LeftMargin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchor_bottom = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 640.0
+offset_bottom = 0.0
+grow_vertical = 2
+theme_override_constants/margin_left = 70
+
+[node name="Center" type="CenterContainer" parent="LeftMargin"]
+layout_mode = 2
+
+[node name="TitleCard" type="PanelContainer" parent="LeftMargin/Center"]
+layout_mode = 2
+
+[node name="Pad" type="MarginContainer" parent="LeftMargin/Center/TitleCard"]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 16
+
+[node name="Box" type="VBoxContainer" parent="LeftMargin/Center/TitleCard/Pad"]
+layout_mode = 2
+theme_override_constants/separation = 8
+custom_minimum_size = Vector2(500.0, 0.0)
+
+[node name="Logo" type="TextureRect" parent="LeftMargin/Center/TitleCard/Pad/Box"]
+layout_mode = 2
+custom_minimum_size = Vector2(460.0, 130.0)
+texture = ExtResource("3_title_logo")
+expand_mode = 1
+stretch_mode = 5
+texture_filter = 4
+unique_name_in_owner = true
+
+[node name="Tagline" type="Label" parent="LeftMargin/Center/TitleCard/Pad/Box"]
+layout_mode = 2
+theme_type_variation = &"LabelBody"
+text = "Harm no one. Avoid the guards. Escape together."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Subtitle" type="Label" parent="LeftMargin/Center/TitleCard/Pad/Box"]
+layout_mode = 2
+theme_type_variation = &"LabelMuted"
+text = "MNKI and Swan are pacifists. Slip past the teddy-bear guards, hurt nobody, and reach the exit gate."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Spacer" type="Control" parent="LeftMargin/Center/TitleCard/Pad/Box"]
+layout_mode = 2
+custom_minimum_size = Vector2(0.0, 8.0)
+
+[node name="PlayButton" type="Button" parent="LeftMargin/Center/TitleCard/Pad/Box"]
+layout_mode = 2
+custom_minimum_size = Vector2(320.0, 48.0)
+text = "Play"
+unique_name_in_owner = true
+
+[node name="RandomButton" type="Button" parent="LeftMargin/Center/TitleCard/Pad/Box"]
+layout_mode = 2
+custom_minimum_size = Vector2(320.0, 48.0)
+text = "Play a random garden"
+unique_name_in_owner = true
+
+[node name="HowButton" type="Button" parent="LeftMargin/Center/TitleCard/Pad/Box"]
+layout_mode = 2
+custom_minimum_size = Vector2(320.0, 48.0)
+text = "How to play"
+unique_name_in_owner = true
+
+[node name="OptionsButton" type="Button" parent="LeftMargin/Center/TitleCard/Pad/Box"]
+layout_mode = 2
+custom_minimum_size = Vector2(320.0, 48.0)
+text = "Options"
+unique_name_in_owner = true
+
+[node name="FullscreenButton" type="Button" parent="LeftMargin/Center/TitleCard/Pad/Box"]
+layout_mode = 2
+custom_minimum_size = Vector2(320.0, 48.0)
+text = "Fullscreen"
+unique_name_in_owner = true
+
+[node name="QuitButton" type="Button" parent="LeftMargin/Center/TitleCard/Pad/Box"]
+layout_mode = 2
+custom_minimum_size = Vector2(320.0, 48.0)
+text = "Quit"
+unique_name_in_owner = true
+
+[node name="BestTime" type="Label" parent="LeftMargin/Center/TitleCard/Pad/Box"]
+layout_mode = 2
+theme_type_variation = &"LabelGold"
+text = "Best time: 0:00"
+horizontal_alignment = 1
+visible = false
+unique_name_in_owner = true
+
+[node name="HowToPlay" parent="." instance=ExtResource("4_HowToPlay")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+visible = false
+unique_name_in_owner = true
+
+[node name="OptionsMenu" parent="." instance=ExtResource("5_OptionsMenu")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+visible = false
+unique_name_in_owner = true

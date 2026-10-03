@@ -1,6 +1,128 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3]
 
-[ext_resource type="Script" path="res://Game/Game.gd" id="1_game"]
+[ext_resource type="Script" path="res://Game/Game.gd" id="1_Game"]
+[ext_resource type="Script" path="res://Game/WorldDraw.gd" id="2_WorldDraw"]
+[ext_resource type="Script" path="res://Game/BubbleLayer.gd" id="3_BubbleLayer"]
+[ext_resource type="Texture2D" path="res://Art/Icons/alert_notice.png" id="4_alert_notice"]
+[ext_resource type="Texture2D" path="res://Art/Icons/alert_chase.png" id="5_alert_chase"]
+[ext_resource type="Texture2D" path="res://Art/Icons/alert_recover.png" id="6_alert_recover"]
+[ext_resource type="Texture2D" path="res://Art/Icons/alert_hurt.png" id="7_alert_hurt"]
+[ext_resource type="PackedScene" path="res://UI/HUD.tscn" id="8_HUD"]
 
 [node name="Game" type="Node2D"]
-script = ExtResource("1_game")
+script = ExtResource("1_Game")
+
+[node name="Views" type="CanvasLayer" parent="."]
+layer = 0
+
+[node name="ViewA" type="SubViewportContainer" parent="Views"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1280.0
+offset_bottom = 720.0
+mouse_filter = 2
+stretch = true
+unique_name_in_owner = true
+
+[node name="SubViewportA" type="SubViewport" parent="Views/ViewA"]
+disable_3d = true
+size = Vector2i(1280, 720)
+render_target_update_mode = 4
+unique_name_in_owner = true
+
+[node name="World" type="Node2D" parent="Views/ViewA/SubViewportA"]
+unique_name_in_owner = true
+script = ExtResource("2_WorldDraw")
+
+[node name="BubbleLayer" type="Node2D" parent="Views/ViewA/SubViewportA"]
+unique_name_in_owner = true
+script = ExtResource("3_BubbleLayer")
+
+[node name="AlertIcons" type="Control" parent="Views/ViewA/SubViewportA"]
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 1.0
+offset_bottom = 1.0
+mouse_filter = 2
+visible = false
+unique_name_in_owner = true
+
+[node name="Notice" type="TextureRect" parent="Views/ViewA/SubViewportA/AlertIcons"]
+mouse_filter = 2
+texture = ExtResource("4_alert_notice")
+expand_mode = 1
+stretch_mode = 5
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 28.0
+offset_bottom = 28.0
+texture_filter = 4
+unique_name_in_owner = true
+
+[node name="Chase" type="TextureRect" parent="Views/ViewA/SubViewportA/AlertIcons"]
+mouse_filter = 2
+texture = ExtResource("5_alert_chase")
+expand_mode = 1
+stretch_mode = 5
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 28.0
+offset_bottom = 28.0
+texture_filter = 4
+unique_name_in_owner = true
+
+[node name="Recover" type="TextureRect" parent="Views/ViewA/SubViewportA/AlertIcons"]
+mouse_filter = 2
+texture = ExtResource("6_alert_recover")
+expand_mode = 1
+stretch_mode = 5
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 28.0
+offset_bottom = 28.0
+texture_filter = 4
+unique_name_in_owner = true
+
+[node name="Hurt" type="TextureRect" parent="Views/ViewA/SubViewportA/AlertIcons"]
+mouse_filter = 2
+texture = ExtResource("7_alert_hurt")
+expand_mode = 1
+stretch_mode = 5
+layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 28.0
+offset_bottom = 28.0
+texture_filter = 4
+unique_name_in_owner = true
+
+[node name="CameraA" type="Camera2D" parent="Views/ViewA/SubViewportA"]
+zoom = Vector2(1.8, 1.8)
+unique_name_in_owner = true
+
+[node name="ViewB" type="SubViewportContainer" parent="Views"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1280.0
+offset_bottom = 720.0
+mouse_filter = 2
+stretch = true
+visible = false
+unique_name_in_owner = true
+
+[node name="SubViewportB" type="SubViewport" parent="Views/ViewB"]
+disable_3d = true
+size = Vector2i(640, 720)
+render_target_update_mode = 0
+unique_name_in_owner = true
+
+[node name="CameraB" type="Camera2D" parent="Views/ViewB/SubViewportB"]
+zoom = Vector2(1.8, 1.8)
+unique_name_in_owner = true
+
+[node name="HUD" parent="." instance=ExtResource("8_HUD")]
+unique_name_in_owner = true

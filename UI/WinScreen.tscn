@@ -1,0 +1,159 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://UI/WinScreen.gd" id="1_WinScreen"]
+[ext_resource type="Texture2D" path="res://Art/Screens/banner_win.png" id="2_banner_win"]
+[ext_resource type="Texture2D" path="res://Art/Screens/badge_new_best.png" id="3_badge_new_best"]
+[ext_resource type="Texture2D" path="res://Art/Icons/icon_fruit.png" id="4_icon_fruit"]
+[ext_resource type="PackedScene" path="res://UI/Components/StatRow.tscn" id="5_StatRow"]
+[ext_resource type="Texture2D" path="res://Art/Icons/icon_clock.png" id="6_icon_clock"]
+[ext_resource type="Texture2D" path="res://Art/Icons/icon_trap.png" id="7_icon_trap"]
+[ext_resource type="Texture2D" path="res://Art/Icons/icon_walkback.png" id="8_icon_walkback"]
+[ext_resource type="Texture2D" path="res://Art/Icons/icon_bonk.png" id="9_icon_bonk"]
+[ext_resource type="Texture2D" path="res://Art/Icons/icon_heart.png" id="10_icon_heart"]
+
+[node name="WinScreen" type="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+script = ExtResource("1_WinScreen")
+
+[node name="Dim" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0, 0.0, 0.0, 0.6)
+
+[node name="Center" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Card" type="PanelContainer" parent="Center"]
+layout_mode = 2
+
+[node name="Pad" type="MarginContainer" parent="Center/Card"]
+layout_mode = 2
+theme_override_constants/margin_left = 44
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 44
+theme_override_constants/margin_bottom = 18
+
+[node name="Box" type="VBoxContainer" parent="Center/Card/Pad"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Banner" type="TextureRect" parent="Center/Card/Pad/Box"]
+layout_mode = 2
+custom_minimum_size = Vector2(336.0, 88.0)
+texture = ExtResource("2_banner_win")
+expand_mode = 1
+stretch_mode = 5
+unique_name_in_owner = true
+
+[node name="Title" type="Label" parent="Center/Card/Pad/Box"]
+layout_mode = 2
+theme_type_variation = &"LabelTitle"
+text = "Everyone made it out - and everyone is safe!"
+horizontal_alignment = 1
+autowrap_mode = 3
+custom_minimum_size = Vector2(640.0, 0.0)
+theme_override_font_sizes/font_size = 28
+theme_override_colors/font_color = Color(1.0, 0.85, 0.35, 1.0)
+unique_name_in_owner = true
+
+[node name="NewBest" type="TextureRect" parent="Center/Card/Pad/Box"]
+layout_mode = 2
+size_flags_horizontal = 4
+custom_minimum_size = Vector2(160.0, 48.0)
+texture = ExtResource("3_badge_new_best")
+expand_mode = 1
+stretch_mode = 5
+visible = false
+unique_name_in_owner = true
+
+[node name="Stats" type="VBoxContainer" parent="Center/Card/Pad/Box"]
+layout_mode = 2
+theme_override_constants/separation = 6
+custom_minimum_size = Vector2(480.0, 0.0)
+
+[node name="FruitRow" parent="Center/Card/Pad/Box/Stats" instance=ExtResource("5_StatRow")]
+layout_mode = 2
+label_text = "Fruit"
+value_text = "0"
+icon = ExtResource("4_icon_fruit")
+unique_name_in_owner = true
+
+[node name="TimeRow" parent="Center/Card/Pad/Box/Stats" instance=ExtResource("5_StatRow")]
+layout_mode = 2
+label_text = "Time"
+value_text = "0"
+icon = ExtResource("6_icon_clock")
+unique_name_in_owner = true
+
+[node name="TrapsRow" parent="Center/Card/Pad/Box/Stats" instance=ExtResource("5_StatRow")]
+layout_mode = 2
+label_text = "Traps disarmed"
+value_text = "0"
+icon = ExtResource("7_icon_trap")
+unique_name_in_owner = true
+
+[node name="CaughtRow" parent="Center/Card/Pad/Box/Stats" instance=ExtResource("5_StatRow")]
+layout_mode = 2
+label_text = "Walked back to the gate"
+value_text = "0"
+icon = ExtResource("8_icon_walkback")
+unique_name_in_owner = true
+
+[node name="BonkRow" parent="Center/Card/Pad/Box/Stats" instance=ExtResource("5_StatRow")]
+layout_mode = 2
+label_text = "Swan bonked"
+value_text = "0"
+icon = ExtResource("9_icon_bonk")
+unique_name_in_owner = true
+
+[node name="PacifistRow" type="HBoxContainer" parent="Center/Card/Pad/Box"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 8
+
+[node name="HeartIcon" type="TextureRect" parent="Center/Card/Pad/Box/PacifistRow"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+custom_minimum_size = Vector2(28.0, 28.0)
+texture = ExtResource("10_icon_heart")
+expand_mode = 1
+stretch_mode = 5
+texture_filter = 4
+
+[node name="PacifistLabel" type="Label" parent="Center/Card/Pad/Box/PacifistRow"]
+layout_mode = 2
+text = "Teddies harmed: 0  -  true pacifists."
+
+[node name="RestartButton" type="Button" parent="Center/Card/Pad/Box"]
+layout_mode = 2
+custom_minimum_size = Vector2(260.0, 44.0)
+text = "Restart"
+unique_name_in_owner = true
+
+[node name="FullscreenButton" type="Button" parent="Center/Card/Pad/Box"]
+layout_mode = 2
+custom_minimum_size = Vector2(260.0, 44.0)
+text = "Fullscreen"
+unique_name_in_owner = true
+
+[node name="MenuButton" type="Button" parent="Center/Card/Pad/Box"]
+layout_mode = 2
+custom_minimum_size = Vector2(260.0, 44.0)
+text = "Main menu"
+unique_name_in_owner = true

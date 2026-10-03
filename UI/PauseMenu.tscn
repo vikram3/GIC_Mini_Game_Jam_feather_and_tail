@@ -1,0 +1,99 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://UI/PauseMenu.gd" id="1_PauseMenu"]
+[ext_resource type="Texture2D" path="res://Art/Screens/banner_pause.png" id="2_banner_pause"]
+[ext_resource type="PackedScene" path="res://UI/Components/OptionsPanel.tscn" id="3_OptionsPanel"]
+
+[node name="PauseMenu" type="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+script = ExtResource("1_PauseMenu")
+
+[node name="Dim" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0, 0.0, 0.0, 0.6)
+
+[node name="Center" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Card" type="PanelContainer" parent="Center"]
+layout_mode = 2
+
+[node name="Pad" type="MarginContainer" parent="Center/Card"]
+layout_mode = 2
+theme_override_constants/margin_left = 44
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 44
+theme_override_constants/margin_bottom = 18
+
+[node name="Box" type="VBoxContainer" parent="Center/Card/Pad"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Banner" type="TextureRect" parent="Center/Card/Pad/Box"]
+layout_mode = 2
+custom_minimum_size = Vector2(336.0, 88.0)
+texture = ExtResource("2_banner_pause")
+expand_mode = 1
+stretch_mode = 5
+unique_name_in_owner = true
+
+[node name="Title" type="Label" parent="Center/Card/Pad/Box"]
+layout_mode = 2
+theme_type_variation = &"LabelTitle"
+text = "Paused"
+horizontal_alignment = 1
+visible = false
+unique_name_in_owner = true
+
+[node name="Info" type="Label" parent="Center/Card/Pad/Box"]
+layout_mode = 2
+theme_type_variation = &"LabelBody"
+text = "Take a breath. The teddies are patient."
+horizontal_alignment = 1
+unique_name_in_owner = true
+
+[node name="Options" parent="Center/Card/Pad/Box" instance=ExtResource("3_OptionsPanel")]
+layout_mode = 2
+show_heading = false
+show_hint = false
+unique_name_in_owner = true
+
+[node name="ResumeButton" type="Button" parent="Center/Card/Pad/Box"]
+layout_mode = 2
+custom_minimum_size = Vector2(260.0, 44.0)
+text = "Resume"
+unique_name_in_owner = true
+
+[node name="RestartButton" type="Button" parent="Center/Card/Pad/Box"]
+layout_mode = 2
+custom_minimum_size = Vector2(260.0, 44.0)
+text = "Restart"
+unique_name_in_owner = true
+
+[node name="FullscreenButton" type="Button" parent="Center/Card/Pad/Box"]
+layout_mode = 2
+custom_minimum_size = Vector2(260.0, 44.0)
+text = "Fullscreen"
+unique_name_in_owner = true
+
+[node name="MenuButton" type="Button" parent="Center/Card/Pad/Box"]
+layout_mode = 2
+custom_minimum_size = Vector2(260.0, 44.0)
+text = "Main menu"
+unique_name_in_owner = true

@@ -1,0 +1,58 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Menus/OptionsMenu.gd" id="1_OptionsMenu"]
+[ext_resource type="PackedScene" path="res://UI/Components/OptionsPanel.tscn" id="2_OptionsPanel"]
+
+[node name="OptionsMenu" type="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+script = ExtResource("1_OptionsMenu")
+
+[node name="Dim" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0, 0.0, 0.0, 0.6)
+
+[node name="Center" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Card" type="PanelContainer" parent="Center"]
+layout_mode = 2
+
+[node name="Pad" type="MarginContainer" parent="Center/Card"]
+layout_mode = 2
+theme_override_constants/margin_left = 44
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 44
+theme_override_constants/margin_bottom = 30
+
+[node name="Box" type="VBoxContainer" parent="Center/Card/Pad"]
+layout_mode = 2
+theme_override_constants/separation = 14
+custom_minimum_size = Vector2(520.0, 0.0)
+
+[node name="Options" parent="Center/Card/Pad/Box" instance=ExtResource("2_OptionsPanel")]
+layout_mode = 2
+show_heading = true
+show_hint = true
+unique_name_in_owner = true
+
+[node name="BackButton" type="Button" parent="Center/Card/Pad/Box"]
+layout_mode = 2
+custom_minimum_size = Vector2(320.0, 48.0)
+text = "Back"
+unique_name_in_owner = true

@@ -69,24 +69,9 @@ func is_fullscreen() -> bool:
 # so on touch devices we ask the player to turn the phone and pause until they do.
 
 func _build_rotate_overlay() -> void:
-    _rotate_layer = CanvasLayer.new()
-    _rotate_layer.layer = 120
-    _rotate_layer.visible = false
+    # layout + art: UI/RotateDevice.tscn
+    _rotate_layer = (load("res://UI/RotateDevice.tscn") as PackedScene).instantiate()
     add_child(_rotate_layer)
-
-    var bg := ColorRect.new()
-    bg.color = Color(0.03, 0.07, 0.05, 1.0)
-    _rotate_layer.add_child(bg)
-    bg.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-
-    var l := Label.new()
-    l.text = "Please turn your device sideways\n(landscape) to play"
-    l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-    l.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-    l.add_theme_font_size_override("font_size", 64)
-    l.add_theme_color_override("font_color", Color(1.0, 0.96, 0.84))
-    bg.add_child(l)
-    l.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 
 
 func _check_orientation() -> void:
